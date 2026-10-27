@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "SpeakUp: AI English Speaking Coach",
+  "short_name": "SpeakUp",
+  "description": "Practice spoken English with an AI partner, look up words by voice, and track your level from A1 to C2.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f4ff",
+  "theme_color": "#6d5efc",
+  "lang": "en",
+  "dir": "auto",
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SpeakUp</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f6f4ff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f0b1e" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SpeakUp">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--tx:#1d1d1b;--mu:#6b6a65;--ac:#2f6df6;--ok:#1f9d55;--bd:#e4e2da;--fx:#fff4d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151514;--card:#201f1e;--tx:#f2f1ed;--mu:#9a9990;--bd:#33322f;--fx:#3a3320}}
+:root[data-theme="dark"]{--bg:#151514;--card:#201f1e;--tx:#f2f1ed;--mu:#9a9990;--bd:#33322f;--fx:#3a3320}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.app{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:26px;margin:4px 0}h2{font-size:18px;margin:0 0 8px}
+.mu{color:var(--mu);font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sc{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.sc:active{transform:scale(.99)}
+.pill{padding:6px 12px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font:inherit;font-size:14px}
+.pill.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:600;cursor:pointer}
+.btn.g{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.chat{display:flex;flex-direction:column;gap:8px;margin:12px 0;min-height:200px}
+.m{max-width:85%;padding:10px 13px;border-radius:16px}
+.ai{background:var(--card);border:1px solid var(--bd);align-self:flex-start}
+.me{background:var(--ac);color:#fff;align-self:flex-end}
+.fx{background:var(--fx);border-radius:10px;padding:8px 10px;font-size:14px;align-self:flex-end;max-width:85%}
+.bar{position:sticky;bottom:0;background:var(--bg);padding:8px 0}
+input{flex:1;min-width:0;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit}
+.mic{width:56px;height:56px;border-radius:50%;border:0;background:var(--ac);color:#fff;font-size:24px;cursor:pointer}
+.mic.rec{background:#d93025;animation:p 1s infinite}
+@keyframes p{50%{opacity:.6}}
+.hide{display:none}
+:root{--bg:#f4f6fb;--card:#fff;--tx:#0f172a;--mu:#64748b;--ac:#2563eb;--bd:#e2e8f0;--fx:#fff7e0;--sh:0 1px 2px rgba(15,23,42,.05),0 4px 14px rgba(15,23,42,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1120;--card:#131c31;--tx:#f1f5f9;--mu:#94a3b8;--bd:#1f2b45;--fx:#3a3320;--sh:none}}
+:root[data-theme="dark"]{--bg:#0b1120;--card:#131c31;--tx:#f1f5f9;--mu:#94a3b8;--bd:#1f2b45;--fx:#3a3320;--sh:none}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.app{padding:20px 18px 28px}
+#home>h1,#home>.mu{display:none}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.logo{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px;box-shadow:0 4px 12px rgba(37,99,235,.35)}
+.brand h1{font-size:22px;margin:0;letter-spacing:-.02em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
+.stats>div{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stats b{display:block;font-size:22px;letter-spacing:-.02em}.stats span{font-size:12px;color:var(--mu)}
+.sec{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);margin:22px 0 8px;font-weight:600}
+.card{border-radius:16px;box-shadow:var(--sh);padding:16px}
+.card.sc h2{font-size:16px;margin:0 0 2px}
+.card.sc{transition:transform .12s,border-color .12s}
+.card.sc:hover{border-color:var(--ac)}
+.row-card{display:flex;align-items:center;gap:14px}
+.row-card b{display:block;font-size:16px}
+.ic{width:46px;height:46px;border-radius:13px;background:color-mix(in srgb,var(--ac) 12%,transparent);display:grid;place-items:center;font-size:23px;flex:none}
+.chev{margin-left:auto;color:var(--mu);font-size:24px}
+.pill{padding:8px 14px;font-weight:500}
+.pill.on{box-shadow:0 2px 8px rgba(37,99,235,.35)}
+.btn{box-shadow:0 2px 8px rgba(37,99,235,.3)}
+.m{box-shadow:var(--sh);line-height:1.5}
+.me{box-shadow:none}
+.bar{border-top:1px solid var(--bd);padding:12px 0 4px}
+.mic{box-shadow:0 4px 14px rgba(37,99,235,.4)}
+input:focus{outline:2px solid var(--ac);border-color:transparent}
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:var(--card);border-top:1px solid var(--bd);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:20}
+.tabs.hide,#ob.hide{display:none}
+.tabs button{flex:1;max-width:140px;background:none;border:0;color:var(--mu);font:inherit;font-size:12px;font-weight:600;padding:6px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs button i{font-style:normal;font-size:20px;filter:grayscale(1);opacity:.7}
+.tabs button.on{color:var(--ac)}.tabs button.on i{filter:none;opacity:1}
+#ob{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+.obi{width:100%;max-width:440px}
+.obi h1{font-size:28px;margin:0 0 8px}
+.dots{display:flex;gap:6px;margin-bottom:24px}.dots i{height:5px;flex:1;border-radius:3px;background:var(--bd)}.dots i.on{background:var(--ac)}
+.vt{font-size:22px;margin:0 0 12px}
+#pg .back{display:none}
+#pg .row{justify-content:center}
+.app{padding-bottom:96px}
+.i{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.18em;margin-right:.4em}
+.i svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic .i{width:24px;height:24px;margin:0;color:var(--ac)}
+.tabs i .i{width:22px;height:22px;margin:0}
+.mic .i{width:26px;height:26px;margin:0}
+.stats .i,.chev .i{margin:0}
+#ac{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
+#ac.hide{display:none}
+.lk{opacity:.6}
+.lsel{padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;font-size:14px}
+.chev{margin-inline-start:auto;margin-left:0}
+[dir=rtl] .sc{text-align:right}[dir=rtl] .chev{transform:scaleX(-1)}
+.lsel{padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit}
+.sc{text-align:start}
+[dir=rtl] .chev{transform:scaleX(-1)}
+.pb{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0 6px}
+.pb i{display:block;height:100%;width:0;background:var(--ac);border-radius:6px;transition:width .4s}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chips .pill{white-space:nowrap}
+.grow{flex:1;min-width:0}.meta{display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac);font-weight:700}
+.sc.lk{opacity:.62}.sechead{display:flex;justify-content:space-between;align-items:baseline}
+.av{width:96px;height:96px;border-radius:50%;margin:0 auto;display:grid;place-items:center;font-size:38px;font-weight:700;color:#fff;background:linear-gradient(135deg,#2563eb,#7c3aed);background-size:cover;background-position:center;overflow:hidden;box-shadow:0 4px 14px rgba(37,99,235,.35)}
+.logo{background-size:cover;background-position:center;overflow:hidden}
+.fl{display:block;margin:14px 0 4px;font-size:13px}
+#pf input:not([type=file]),#pf select{width:100%}
+#pf select{padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit}
+#pf textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;resize:vertical}
+.sw{position:relative;display:inline-block;width:48px;height:28px}.sw input{opacity:0;width:0;height:0}
+.sw span{position:absolute;inset:0;background:var(--bd);border-radius:99px;transition:.2s;cursor:pointer}.sw span:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw input:checked+span{background:var(--ac)}.sw input:checked+span:before{transform:translateX(20px)}
+.lrow{display:flex;align-items:center;gap:12px;width:100%;padding:13px 0;border:0;border-bottom:1px solid var(--bd);background:none;color:inherit;font:inherit;text-align:start;cursor:pointer}
+.lrow .i{margin:0;color:var(--ac);width:22px;height:22px}
+.fav{display:inline-grid;place-items:center;padding:6px;color:var(--mu)}.fav .i{margin:0;width:20px;height:20px}.fav.on{color:#f59e0b}.fav.on svg{fill:currentColor}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.badge{text-align:center;font-size:11px;color:var(--mu);opacity:.55}.badge.on{opacity:1;color:var(--tx)}
+.badge .i{display:block;width:30px;height:30px;margin:0 auto 6px;color:var(--mu)}.badge.on .i{color:var(--ac)}
+details{border-bottom:1px solid var(--bd);padding:10px 0}details:last-child{border:0}summary{font-weight:600;cursor:pointer}details p{margin:8px 0 0}
+#hp textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit}
+#sq{width:100%;margin-bottom:10px}
+
+/* ===== Vibrant theme ===== */
+:root{--bg:#f6f4ff;--card:#fff;--tx:#1b1740;--mu:#6b6a8f;--bd:#e6e1fb;--fx:#fff1c7;--ac:#6d5efc;--ac2:#ec4899;
+ --grad:linear-gradient(135deg,#6366f1 0%,#8b5cf6 52%,#ec4899 100%);--grad2:linear-gradient(90deg,#2dd4bf,#6366f1 55%,#ec4899);
+ --sh:0 1px 2px rgba(80,60,180,.06),0 10px 28px rgba(80,60,180,.10)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0b1e;--card:#1a1433;--tx:#f5f3ff;--mu:#a29fc7;--bd:#2d2552;--fx:#3b3216;--sh:0 8px 28px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#0f0b1e;--card:#1a1433;--tx:#f5f3ff;--mu:#a29fc7;--bd:#2d2552;--fx:#3b3216;--sh:0 8px 28px rgba(0,0,0,.35)}
+body{background:radial-gradient(circle at 8% -8%,rgba(139,92,246,.20),transparent 42%),radial-gradient(circle at 102% 2%,rgba(236,72,153,.16),transparent 36%),var(--bg);background-attachment:fixed}
+.app{padding-bottom:116px}
+.card{border-radius:20px}
+.btn{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(124,58,237,.38)}
+.btn.g{background:var(--card);color:var(--tx);box-shadow:none}
+.pill.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 14px rgba(124,58,237,.35)}
+.pb{height:10px}.pb i{background:var(--grad2)}
+.logo,.av{background:var(--grad)}
+.mic{background:var(--grad);box-shadow:0 8px 22px rgba(124,58,237,.45)}
+.mic.rec{background:linear-gradient(135deg,#ef4444,#f97316);box-shadow:0 0 0 8px rgba(239,68,68,.18),0 8px 22px rgba(239,68,68,.45)}
+.me{background:var(--grad);box-shadow:0 6px 16px rgba(124,58,237,.28)}
+.ai{border-left:3px solid #8b5cf6}
+.tag{background:rgba(109,94,252,.14);color:var(--ac)}
+#ac,#ob{background:radial-gradient(circle at 15% 0%,rgba(139,92,246,.30),transparent 46%),radial-gradient(circle at 95% 8%,rgba(236,72,153,.24),transparent 42%),var(--bg)}
+/* home hero */
+#home .brand{position:relative;overflow:hidden;padding:18px;border-radius:24px;background:var(--grad);color:#fff;box-shadow:0 14px 34px rgba(124,58,237,.38);margin-bottom:16px}
+#home .brand:before{content:"";position:absolute;right:-34px;top:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.15)}
+#home .brand:after{content:"";position:absolute;right:50px;bottom:-56px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.10)}
+#home .brand h1,#home .brand .mu{color:#fff!important;position:relative;z-index:1}
+#home .brand .mu{opacity:.9}
+#home .brand .logo{background:rgba(255,255,255,.24);box-shadow:none;position:relative;z-index:1}
+/* stats */
+.stats>div.st{padding:14px 8px 12px}
+.sti{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;margin:0 auto 8px;color:#fff;box-shadow:0 6px 14px rgba(0,0,0,.14)}
+.sti .i{margin:0;width:21px;height:21px;color:#fff}
+.st1 .sti{background:linear-gradient(135deg,#fbbf24,#ef4444)}.st2 .sti{background:linear-gradient(135deg,#f472b6,#a855f7)}.st3 .sti{background:linear-gradient(135deg,#2dd4bf,#3b82f6)}
+/* progress + word of the day */
+#lvc{background:linear-gradient(var(--card),var(--card)) padding-box,var(--grad) border-box;border:2px solid transparent}
+#lvc b .i,#wotd b .i{width:1.25em;height:1.25em}
+#wotd{background:linear-gradient(135deg,rgba(99,102,241,.14),rgba(236,72,153,.14));border-color:transparent}
+#wdw{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* scenarios: colored icon badges by topic */
+.row-card .ic{width:50px;height:50px;border-radius:17px;background:var(--grad);box-shadow:0 8px 18px rgba(99,102,241,.32)}
+.row-card .ic .i{color:#fff;width:26px;height:26px}
+.sc[data-cat="Daily life"] .ic{background:linear-gradient(135deg,#fb923c,#f43f5e);box-shadow:0 8px 18px rgba(244,63,94,.30)}
+.sc[data-cat="Work"] .ic{background:linear-gradient(135deg,#38bdf8,#6366f1);box-shadow:0 8px 18px rgba(99,102,241,.32)}
+.sc[data-cat="Travel"] .ic{background:linear-gradient(135deg,#2dd4bf,#0ea5e9);box-shadow:0 8px 18px rgba(14,165,233,.30)}
+.sc[data-cat="Health"] .ic{background:linear-gradient(135deg,#f472b6,#a855f7);box-shadow:0 8px 18px rgba(168,85,247,.32)}
+.sc[data-cat="Daily life"] .tag{background:rgba(244,63,94,.12);color:#e11d48}
+.sc[data-cat="Work"] .tag{background:rgba(99,102,241,.14);color:#4f46e5}
+.sc[data-cat="Travel"] .tag{background:rgba(14,165,233,.14);color:#0284c7}
+.sc[data-cat="Health"] .tag{background:rgba(168,85,247,.14);color:#9333ea}
+.sc.lk{opacity:.72;filter:saturate(.35)}
+.fav.on{color:#f59e0b;filter:drop-shadow(0 2px 4px rgba(245,158,11,.5))}
+/* floating tab bar */
+.tabs{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));padding:6px 8px;border:1px solid var(--bd);border-radius:26px;box-shadow:0 14px 36px rgba(80,60,180,.26);background:color-mix(in srgb,var(--card) 90%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.tabs button i{padding:4px 14px;border-radius:14px;opacity:1;filter:none;transition:background .2s,transform .2s}
+.tabs button.on i{background:var(--grad);color:#fff;box-shadow:0 8px 16px rgba(124,58,237,.42);transform:translateY(-2px)}
+.tabs button.on{color:var(--ac)}
+/* profile rows, badges */
+.lrow .i{width:40px;height:40px;padding:9px;box-sizing:border-box;border-radius:13px;color:#fff;background:var(--grad);box-shadow:0 6px 14px rgba(99,102,241,.28)}
+#pfiv .i{background:linear-gradient(135deg,#f472b6,#f43f5e)}#mhs .i{background:linear-gradient(135deg,#2dd4bf,#0ea5e9)}#mst .i{background:linear-gradient(135deg,#a78bfa,#6366f1)}#mhp .i{background:linear-gradient(135deg,#fbbf24,#f97316)}
+.badge .i{width:46px;height:46px;padding:10px;box-sizing:border-box;border-radius:50%;background:var(--bd);color:var(--mu);margin:0 auto 6px}
+.badge.on .i{color:#fff;box-shadow:0 8px 16px rgba(0,0,0,.18)}
+.badge:nth-child(1).on .i{background:linear-gradient(135deg,#60a5fa,#6366f1)}.badge:nth-child(2).on .i{background:linear-gradient(135deg,#f472b6,#ec4899)}
+.badge:nth-child(3).on .i{background:linear-gradient(135deg,#fbbf24,#ef4444)}.badge:nth-child(4).on .i{background:linear-gradient(135deg,#f97316,#dc2626)}
+.badge:nth-child(5).on .i{background:linear-gradient(135deg,#34d399,#0ea5e9)}.badge:nth-child(6).on .i{background:linear-gradient(135deg,#fde047,#f59e0b)}
+.badge:nth-child(7).on .i{background:linear-gradient(135deg,#a78bfa,#7c3aed)}.badge:nth-child(8).on .i{background:linear-gradient(135deg,#fb7185,#f43f5e)}
+#pgb div[style*="min-height:3px"]{background:var(--grad)!important;box-shadow:0 6px 14px rgba(124,58,237,.25)}
+</style></head><body><div class="app">
+
+<div id="home">
+  <div class="brand"><span class="logo">S</span><div><h1>SpeakUp</h1><div class="mu" style="display:block">AI English speaking coach</div></div></div>
+  <div class="stats"><div class="st st1"><span class="sti"><span class="i" data-ic="flame"></span></span><b id="s1">0</b><span>day streak</span></div><div class="st st2"><span class="sti"><span class="i" data-ic="book"></span></span><b id="s2">0</b><span>words saved</span></div><div class="st st3"><span class="sti"><span class="i" data-ic="bolt"></span></span><b id="s3">0</b><span>sessions</span></div></div>
+  <div class="card" id="lvc"><div class="row" style="justify-content:space-between"><b><span class="i" data-ic="trophy" style="color:#f59e0b"></span>Level progress</b><span class="mu"><span id="lvf"></span> → <span id="lvt"></span></span></div><div class="pb"><i id="lvb"></i></div><div class="mu" id="lvx"></div><div class="mu" id="lvh" style="margin-top:6px;font-size:12px"></div><div id="lva"></div></div>
+  <div class="card" id="wotd"><div class="row" style="justify-content:space-between"><b><span class="i" data-ic="sparkle" style="color:#ec4899"></span>Word of the day</b><button class="pill" id="wdl"><span class="i" data-ic="volume"></span>Listen</button></div><h2 id="wdw" style="margin:10px 0 2px;font-size:22px"></h2><div class="mu" id="wdm"></div><p id="wde" style="margin:8px 0;font-style:italic"></p><button class="btn g" id="wds">Save word</button></div>
+  <h3 class="sec">Your level</h3>
+  <h1>SpeakUp</h1>
+  <p class="mu">Practice speaking English with an AI partner. Pick your level and a scenario.</p>
+  <div class="row" id="levels"></div>
+  <div class="mu" style="margin-top:10px">Streak: <b id="streak">0</b> day(s)</div>
+  <div class="card hide" id="bdb"><div class="row"><span class="ic"><span class="i" data-ic="gift"></span></span><b id="bdt"></b></div></div>
+  <div class="sechead"><h3 class="sec">Practice scenarios</h3><span class="mu" id="lcount"></span></div>
+  <input id="sq" placeholder="Search scenarios" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <div id="list"></div>
+  <h3 class="sec">Tools</h3>
+  <button class="card sc" id="ptbtn"><h2><span class="i" data-ic="compass"></span> Find my level</h2><span class="mu">5-question quick test</span></button>
+  <button class="card sc" id="pgbtn"><h2><span class="i" data-ic="trend"></span> My progress</h2><span class="mu">Your last 7 days</span></button>
+  <button class="card sc" id="pwbtn"><h2><span class="i" data-ic="star"></span> Go Premium</h2><span class="mu" id="plan"></span></button>
+  <button class="card sc" id="pbtn"><h2><span class="i" data-ic="target"></span> Pronunciation practice</h2><span class="mu">Repeat phrases and get a score</span></button>
+  <div class="card"><h2><span class="i" data-ic="book"></span> My words <span class="mu" id="wc"></span></h2><ul id="mw" style="margin:0 0 8px;padding-left:18px"></ul><button class="pill" id="clr">Clear list</button></div>
+</div>
+
+<div id="chatv" class="hide">
+  <div class="row" style="justify-content:space-between">
+    <button class="pill" id="back">← Back</button>
+    <b id="ctitle"></b>
+    <button class="pill" id="end">Finish</button>
+  </div>
+  <div class="chat" id="chat"></div>
+  <div class="bar">
+    <div class="row">
+      <button class="mic" id="mic" title="Speak"><span class="i" data-ic="mic"></span></button>
+      <input id="txt" placeholder="Or type your answer…" autocomplete="off">
+      <button class="btn" id="send">Send</button>
+    </div>
+    <div class="mu" id="note" style="margin-top:6px"></div>
+  </div>
+</div>
+
+<div id="rep" class="hide">
+  <h1>Session report</h1>
+  <div id="repbody"></div>
+  <button class="btn" id="again" style="margin-top:12px">Practice again</button>
+</div>
+
+<div id="pr" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill" id="pback">← Back</button><b><span class="i" data-ic="target"></span> Pronunciation</b><span></span></div>
+  <div class="card"><h2 id="pph"></h2>
+    <div class="row"><button class="pill" id="plisten"><span class="i" data-ic="volume"></span> Listen</button><button class="mic" id="pmic"><span class="i" data-ic="mic"></span></button><button class="pill" id="pnext">Next →</button></div>
+    <p id="pres" class="mu"></p></div>
+</div>
+
+<div id="pt" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill back">← Back</button><b><span class="i" data-ic="compass"></span> Level test</b><span id="pq" class="mu"></span></div>
+  <div class="card"><h2 id="qt"></h2><div id="qo"></div></div>
+</div>
+
+<div id="pg" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill back">← Back</button><b><span class="i" data-ic="trend"></span> Progress</b><span></span></div>
+  <div class="card" id="pgb"></div>
+</div>
+
+<div id="pw" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill back">← Back</button><b><span class="i" data-ic="star"></span> Premium</b><span></span></div>
+  <p class="mu" id="pwmsg"></p>
+  <div class="card"><h2>Free</h2><span class="mu">3 conversations · 3 starter scenarios (+2 per invited friend) · pronunciation practice</span></div>
+  <div class="card" style="border-color:var(--ac)"><h2>Yearly · $59.99 <span class="mu">(save 50%)</span></h2><span class="mu">Unlimited conversations, all scenarios, full progress tracking</span><br><button class="btn" data-p="yearly" style="margin-top:8px">Start 7-day free trial</button></div>
+  <div class="card"><h2>Monthly · $9.99</h2><span class="mu">Everything in Yearly, billed monthly</span><br><button class="btn g" data-p="monthly" style="margin-top:8px">Choose monthly</button></div>
+  <p class="mu">Demo only: no payment is taken. Prices are placeholders. The real app would connect to App Store and Google Play subscriptions.</p>
+</div>
+
+<div id="wd" class="hide"></div>
+
+<div id="dc" class="hide">
+  <h1 class="vt">Dictionary</h1>
+  <div class="row"><input id="dq" placeholder="Type or say a word" autocomplete="off"><button class="mic" id="dmic" style="width:48px;height:48px;flex:none"><span class="i" data-ic="mic"></span></button><button class="btn" id="dgo">Search</button></div>
+  <div class="mu" id="dnote" style="min-height:22px;margin-top:8px"></div>
+  <div id="dres"></div>
+  <h3 class="sec" id="drh">Recent searches</h3><div class="chips" id="drec" style="flex-wrap:wrap"></div>
+</div>
+<div id="hs" class="hide"><div class="row" style="justify-content:space-between"><button class="pill back2">← Back</button><b>History</b><span></span></div><div id="hsl" style="margin-top:12px"></div></div>
+<div id="hd" class="hide"><div class="row" style="justify-content:space-between"><button class="pill" id="hdb">← Back</button><b id="hdt"></b><span></span></div><div id="hdc" class="chat"></div></div>
+<div id="st" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill back2">← Back</button><b>Settings</b><span></span></div>
+  <div class="card" style="margin-top:12px"><div class="row" style="justify-content:space-between"><b>Voice replies</b><label class="sw"><input type="checkbox" id="stv"><span></span></label></div>
+    <label class="mu fl">Voice speed</label><div class="row" id="strate"></div>
+    <label class="mu fl">Text size</label><div class="row" id="stsize"></div></div>
+  <div class="card"><button class="btn g" id="stcp" style="width:100%">Copy my data</button><button class="btn g" id="stch" style="width:100%;margin-top:8px">Clear history</button><div id="stm" style="min-height:20px;margin-top:8px;font-size:14px"></div></div>
+</div>
+<div id="hp" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill back2">← Back</button><b>Help &amp; support</b><span></span></div>
+  <div class="card" style="margin-top:12px">
+    <details><summary>How do levels work?</summary><p class="mu">Your level moves through the standard A1 to C2 steps. Every finished session adds XP. When your recent scores are high, the app suggests moving up.</p></details>
+    <details><summary>How do I unlock more scenarios?</summary><p class="mu">Invite friends from your Profile. Every friend who signs up with your code unlocks 2 more scenarios and 2 more conversations.</p></details>
+    <details><summary>The microphone is not working</summary><p class="mu">Allow microphone access for this site in your browser settings, use Chrome or Safari, and check your internet connection. You can always type your answer instead.</p></details>
+    <details><summary>Is my data safe?</summary><p class="mu">In this prototype, your account and progress are saved only on this device. The full app will store them securely on a server.</p></details>
+    <details><summary>How do I delete my account?</summary><p class="mu">Open Profile and tap Delete account at the bottom. This erases your data on this device.</p></details>
+  </div>
+  <div class="card"><h2>Send feedback</h2><textarea id="fbt" rows="3" maxlength="500" placeholder="Tell us what to improve"></textarea><button class="btn" id="fbs" style="width:100%;margin-top:8px">Send feedback</button><div id="fbm" style="min-height:20px;margin-top:6px;font-size:14px"></div></div>
+  <p class="mu" style="text-align:center;font-size:12px">SpeakUp prototype v1.0</p>
+</div>
+<div id="iv" class="hide">
+  <div class="row" style="justify-content:space-between"><button class="pill back">← Back</button><b>Invite friends</b><span></span></div>
+  <div class="card"><h2>Unlock more scenarios</h2><p class="mu" style="margin:0 0 10px">Each friend who signs up unlocks 2 more scenarios.</p>
+    <div class="row" style="justify-content:space-between"><span><b id="ivn">0</b> <span class="mu">friends joined</span></span><span><b id="ivu">3</b> <span class="mu">/ 10 scenarios unlocked</span></span></div>
+    <div class="pb"><i id="ivp"></i></div></div>
+  <div class="card"><h2>Your invite code</h2><div class="row"><input id="ivc" readonly style="font-weight:700;letter-spacing:.06em"><button class="pill" id="ivcp">Copy</button></div>
+    <button class="btn" id="ivsh" style="width:100%;margin-top:10px">Share invite link</button></div>
+  <div class="card"><h2>A friend joined?</h2><p class="mu" style="margin:0 0 8px">Paste the confirmation code they send you after signing up.</p>
+    <div class="row"><input id="ivr" placeholder="FR-XXXX-XXXX"><button class="btn" id="ivrb">Redeem</button></div><div id="ivm" style="min-height:22px;margin-top:8px;font-size:14px"></div></div>
+  <p class="mu" style="font-size:12px">Demo: invites are confirmed on this device only. A live app would verify sign-ups on a server.</p>
+</div>
+
+<div id="pf" class="hide">
+  <h1 class="vt">Profile</h1>
+  <div class="card" style="text-align:center">
+    <div class="av" id="pfav"></div>
+    <div class="row" style="justify-content:center;margin-top:12px"><label class="pill" for="avf">Change photo</label><input type="file" id="avf" accept="image/*" hidden><button class="pill" id="avr">Remove</button></div>
+    <h2 id="pfname" style="margin:14px 0 2px"></h2><div class="mu" id="pfmail"></div><div class="mu" id="pfsub"></div><p id="pfbp" style="margin:8px 0 0;font-size:14px"></p><div class="mu" id="pftd" style="margin-top:6px"></div>
+    <div class="mu" id="avm" style="min-height:18px;margin-top:6px;font-size:13px"></div>
+  </div>
+  <div class="card hide" id="ivb"><div class="mu">You joined with a friend's invite. Send them this code so they unlock 2 scenarios:</div><div class="row" style="margin-top:8px"><b id="ivbc" style="letter-spacing:.06em"></b><button class="pill" id="ivbcp">Copy</button></div></div>
+  <div class="card"><h2>More</h2>
+    <button class="lrow" id="pfiv"><span class="i" data-ic="gift"></span><span class="grow">Invite friends</span><span class="chev">›</span></button>
+    <button class="lrow" id="mhs"><span class="i" data-ic="clock"></span><span class="grow">History</span><span class="chev">›</span></button>
+    <button class="lrow" id="mst"><span class="i" data-ic="cog"></span><span class="grow">Settings</span><span class="chev">›</span></button>
+    <button class="lrow" id="mhp" style="border:0"><span class="i" data-ic="help"></span><span class="grow">Help &amp; support</span><span class="chev">›</span></button>
+  </div>
+  <div class="card"><h2>Edit profile</h2>
+    <label class="mu fl">Display name</label><input id="pfn" maxlength="40">
+    <label class="mu fl">Bio</label><textarea id="pfbio" maxlength="160" rows="3" placeholder="Tell us a little about yourself"></textarea><div class="mu" id="pfbc" style="text-align:end;font-size:12px"></div>
+    <label class="mu fl">Birthday</label><input id="pfbd" type="date">
+    <label class="mu fl">Country</label><select id="pfct"></select>
+    <label class="mu fl">Native language</label><select id="pfnat"></select>
+    <label class="mu fl">Learning goal</label><div class="row" id="pfgl"></div>
+    <label class="mu fl">Daily goal (sessions per day)</label><div class="row" id="pfdg"></div>
+    <label class="mu fl">Practice reminder time</label><input id="pfrt" type="time">
+    <div class="mu" style="font-size:12px;margin-top:4px">Reminder notifications need the full mobile app. The time is saved for later.</div>
+    <button class="btn" id="pfsv" style="width:100%;margin-top:14px">Save changes</button><div id="pfmsg" style="min-height:20px;margin-top:6px;font-size:14px"></div>
+  </div>
+  <div class="card"><h2>Change password</h2>
+    <input id="pcw" type="password" placeholder="Current password" autocomplete="current-password"><input id="pnw" type="password" placeholder="New password (8+ characters)" autocomplete="new-password" style="margin-top:8px">
+    <button class="btn g" id="pcb" style="width:100%;margin-top:10px">Update password</button><div id="pcm" style="min-height:20px;margin-top:6px;font-size:14px"></div>
+  </div>
+  <div class="card"><h2>Account</h2><div class="mu" id="pfacct"></div><button class="btn g" id="lgo" style="margin-top:8px">Log out</button></div>
+  <div class="card"><h2>Your goal</h2><div class="mu" id="pfgoal"></div></div>
+  <div class="card"><h2>Level</h2><div class="row" id="pflv"></div></div>
+  <div class="card"><h2>Plan</h2><div class="mu" id="pfpl"></div><button class="btn g" id="pfup" style="margin-top:8px">View plans</button></div>
+  <div class="card"><h2>App language</h2><select class="lsel" aria-label="Language"></select></div>
+  <div class="card"><h2>Appearance</h2><div class="row"><button class="pill" data-th="auto">Auto</button><button class="pill" data-th="light">Light</button><button class="pill" data-th="dark">Dark</button></div></div>
+  <div class="row"><button class="pill" id="rstob">Replay onboarding</button><button class="pill" id="rst">Reset all data</button><button class="pill" id="delacc">Delete account</button></div>
+</div>
+
+<nav class="tabs hide" id="tabs">
+  <button data-t="home"><i><span class="i" data-ic="home"></span></i>Home</button><button data-t="pg"><i><span class="i" data-ic="trend"></span></i>Progress</button><button data-t="wd"><i><span class="i" data-ic="book"></span></i>Words</button><button data-t="dc"><i><span class="i" data-ic="search"></span></i>Dictionary</button><button data-t="pf"><i><span class="i" data-ic="user"></span></i>Profile</button>
+</nav>
+
+<div id="ac" class="hide"><div class="obi">
+  <div style="text-align:end;margin-bottom:12px"><select class="lsel" aria-label="Language"></select></div>
+  <div class="brand"><span class="logo">S</span><div><b style="font-size:20px">SpeakUp</b></div></div>
+  <div id="acc"></div>
+  <button class="btn" id="acb" style="width:100%;margin-top:14px">Create account</button>
+  <div style="text-align:center"><button class="pill" id="acalt" style="border:0;margin-top:10px;background:none">Create a new account instead</button></div>
+  <p class="mu" style="font-size:12px;margin-top:14px">Demo accounts are saved only in this browser. A production app would store them securely on a server.</p>
+</div></div>
+
+<div id="ob" class="hide"><div class="obi">
+  <div style="text-align:end;margin-bottom:12px"><select class="lsel" aria-label="Language"></select></div>
+  <div class="dots" id="dots"></div>
+  <div id="obc"></div>
+  <button class="btn" id="obn" style="width:100%;margin-top:20px">Continue</button>
+  <div style="text-align:center"><button class="pill" id="obs" style="border:0;margin-top:10px;background:none">Skip</button></div>
+</div></div>
+
+</div>
+<script>
+const IC={'flame':'<path d="M12 3c1 3.2 4.2 4.6 4.2 8.6a4.2 4.2 0 0 1-8.4 0c0-1.8.8-3 1.9-4C10.6 9.1 11.2 10.2 12 10.2c-.3-2.4-.5-4.6 0-7.2z"/>','bolt':'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>','trophy':'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4"/>','sparkle':'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/>','search':'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>','clock':'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>','cog':'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>','help':'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6M12 17h.01"/>','award':'<circle cx="12" cy="9" r="6"/><path d="M8.5 14.5L7 22l5-3 5 3-1.5-7.5"/>','gift':'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v8h14v-8M8 8a2.5 2.5 0 1 1 0-5c2 0 4 2.5 4 5 0-2.5 2-5 4-5a2.5 2.5 0 1 1 0 5"/>','lock':'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',"home": "<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><path d=\"M10 20v-6h4v6\"/>", "trend": "<path d=\"M3 17l6-6 4 4 8-8\"/><path d=\"M15 7h6v6\"/>", "book": "<path d=\"M4 19.5V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2.5z\"/><path d=\"M6 17h14v4H6a2 2 0 0 1-2-2\"/>", "user": "<circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21a8 8 0 0 1 16 0\"/>", "mic": "<rect x=\"9\" y=\"3\" width=\"6\" height=\"12\" rx=\"3\"/><path d=\"M5 11a7 7 0 0 0 14 0\"/><path d=\"M12 18v3\"/>", "volume": "<path d=\"M4 9v6h4l5 4V5L8 9z\"/><path d=\"M16.5 8.5a5 5 0 0 1 0 7\"/><path d=\"M19 6a8.5 8.5 0 0 1 0 12\"/>", "star": "<path d=\"M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z\"/>", "target": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>", "compass": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M15.5 8.5l-2 5-5 2 2-5z\"/>", "coffee": "<path d=\"M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z\"/><path d=\"M17 10h2a2 2 0 0 1 0 4h-2\"/><path d=\"M8 3v2M12 3v2\"/>", "briefcase": "<rect x=\"3\" y=\"7\" width=\"18\" height=\"13\" rx=\"2\"/><path d=\"M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2\"/><path d=\"M3 13h18\"/>", "plane": "<path d=\"M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z\"/>", "bed": "<path d=\"M3 18V6\"/><path d=\"M3 14h18v4\"/><path d=\"M21 14v-3a3 3 0 0 0-3-3h-7v6\"/><circle cx=\"7\" cy=\"11\" r=\"1.5\"/>", "steth": "<path d=\"M6 3v6a4 4 0 0 0 8 0V3\"/><path d=\"M10 13v2a5 5 0 0 0 10 0v-1\"/><circle cx=\"20\" cy=\"12\" r=\"2\"/>", "chat": "<path d=\"M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z\"/>", "utensils": "<path d=\"M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10\"/><path d=\"M17 21V3c-2.5 1.5-3.5 4-3.5 7.5V14H17\"/>", "bag": "<path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6a3 3 0 0 1 6 0v2\"/>", "phone": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>"};
+const ico=n=>'<span class="i"><svg viewBox="0 0 24 24">'+(IC[n]||"")+'</svg></span>';
+
+const isPrem=()=>{try{return !!JSON.parse(localStorage.getItem("sup_prem"));}catch(e){return false;}};
+const SC=[
+ {i:"coffee",t:"Order at a café",r:"a friendly barista taking the learner's coffee order"},
+ {i:"briefcase",t:"Job interview",r:"a polite hiring manager interviewing the learner for an office job"},
+ {i:"plane",t:"At the airport",r:"an airline check-in agent helping the learner at the counter"},
+ {i:"bed",t:"Hotel check-in",r:"a hotel receptionist checking the learner in"},
+ {i:"steth",t:"At the doctor",r:"a kind doctor asking the learner about mild symptoms"},
+ {i:"chat",t:"Small talk",r:"a friendly new coworker making small talk with the learner"},
+ {i:"utensils",t:"Restaurant",r:"a waiter taking the learner's dinner order"},
+ {i:"bag",t:"Shopping for clothes",r:"a shop assistant helping the learner find clothes"},
+ {i:"compass",t:"Asking for directions",r:"a helpful local person giving the learner directions in the city"},
+ {i:"phone",t:"Phone call to a friend",r:"a friend planning a weekend trip with the learner by phone"}
+];
+const LV=["Beginner","Intermediate","Advanced"];
+let level="Beginner",sc=null,hist=[],fixes=[],sample=null,busy=false;
+const $=id=>document.getElementById(id);
+const show=v=>{["home","chatv","rep","pr","pt","pg","pw","wd","pf","iv","hs","hd","st","hp","dc"].forEach(x=>$(x).classList.toggle("hide",x!==v));tabsUpd(v);};
+function tabsUpd(v){const t=$("tabs");t.classList.toggle("hide",!["home","pg","wd","pf","dc"].includes(v));[...t.children].forEach(b=>b.classList.toggle("on",b.dataset.t===v));scrollTo(0,0);if(v==="home"){renderLv();banner();wotd();}if(v==="iv")ivRender();renderAv();}
+
+// streak (per-viewer convenience)
+function streak(bump){
+  try{
+    const d=new Date().toDateString(),s=JSON.parse(localStorage.getItem("su")||"{}");
+    if(bump&&s.last!==d){const y=new Date(Date.now()-864e5).toDateString();s.n=s.last===y?(s.n||0)+1:1;s.last=d;localStorage.setItem("su",JSON.stringify(s));}
+    $("streak").textContent=s.n||0;
+  }catch(e){}
+}
+streak(false);
+
+$("levels").innerHTML=LV.map(l=>`<button class="pill ${l===level?"on":""}" data-l="${l}">${l}</button>`).join("");
+$("levels").onclick=e=>{const l=e.target.dataset.l;if(!l)return;level=l;[...$("levels").children].forEach(b=>b.classList.toggle("on",b.dataset.l===l));};
+const SCX={"Order at a café":["Daily life","A1–A2"],"Job interview":["Work","B1–B2"],"At the airport":["Travel","A2–B1"],"Hotel check-in":["Travel","A2–B1"],"At the doctor":["Health","B1"],"Small talk":["Daily life","A1–A2"],"Restaurant":["Daily life","A2"],"Shopping for clothes":["Daily life","A2"],"Asking for directions":["Travel","A1–A2"],"Phone call to a friend":["Daily life","B1"]};
+let cat="All",sq="";
+function renderList(){
+  const un=unlockedN(),n=SC.length,f=favs(),q=sq.trim().toLowerCase();
+  $("lcount").textContent=un+" / "+n;
+  $("chips").innerHTML=["All","Favorites","Daily life","Work","Travel","Health"].map(c=>`<button class="pill${c===cat?" on":""}" data-c="${c}">${c}</button>`).join("");
+  const rows=SC.map((s,i)=>({s,i})).filter(o=>(cat==="All"||(cat==="Favorites"?f.includes(o.s.t):(SCX[o.s.t]||[""])[0]===cat))&&(!q||(o.s.t+" "+(SCX[o.s.t]||[""])[0]).toLowerCase().includes(q)));
+  $("list").innerHTML=rows.map(({s,i})=>{const l=i>=un,x=SCX[s.t]||["",""],fv=f.includes(s.t);return `<button class="card sc row-card${l?" lk":""}" data-i="${i}" data-cat="${(SCX[s.t]||[""])[0]}"><span class="ic">${ico(l?"lock":s.i)}</span><span class="grow"><b>${s.t}</b><span class="meta"><span class="tag">${x[1]}</span><span class="mu">${x[0]}</span></span></span><span class="fav${fv?" on":""}" data-t="${s.t}">${ico("star")}</span><span class="chev">${l?"":"\u203a"}</span></button>`;}).join("")||'<p class="mu">No scenarios found</p>';
+}
+$("chips").onclick=e=>{const c=e.target.dataset.c;if(!c)return;cat=c;renderList();};
+$("list").onclick=e=>{const f=e.target.closest(".fav");if(f){toggleFav(f.dataset.t);return;}const b=e.target.closest(".sc");if(b)start(+b.dataset.i);};
+
+if(window.claude&&claude.use){claude.use("sample").then(s=>{sample=s;}).catch(()=>{});}
+
+function add(cls,text){const d=document.createElement("div");d.className=cls;d.textContent=text;$("chat").appendChild(d);d.scrollIntoView({block:"end"});}
+function speak(t,force){try{if(S().voice===false&&!force)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=({slow:.75,normal:level==="Beginner"?.85:1,fast:1.2})[S().rate]||1;speechSynthesis.speak(u);}catch(e){}}
+
+function start(i){
+  if(!prem()&&i>=unlockedN()){show("iv");return;}
+  if(!prem()){const n=ls("sup_n",0);if(n>=FREE){$("pwmsg").textContent="You have used your "+FREE+" free conversations. Upgrade to keep practicing.";show("pw");return;}lset("sup_n",n+1);planTxt();}
+  
+  sc=SC[i];hist=[];fixes=[];$("chat").innerHTML="";$("ctitle").innerHTML=ico(sc.i)+sc.t;
+  $("note").textContent="";show("chatv");turn();
+}
+
+async function ask(prompt){
+  if(!sample){sample=window.claude&&claude.use?await claude.use("sample"):null;}
+  if(!sample)throw new Error("AI is unavailable here. Open this page in claude.ai to chat.");
+  return sample.json(prompt,{cache:false,modelTier:"quick"});
+}
+
+async function turn(){
+  if(busy)return;busy=true;$("note").textContent="AI is thinking…";
+  const log=hist.length?hist.map(m=>(m.me?"Learner: ":"AI: ")+m.t).join("\n"):"(No messages yet. Start with a short greeting in role.)";
+  const p=`You are an English speaking partner for a ${level} learner. Role: ${sc.r}. Stay in role. Use ${level==="Beginner"?"very simple words":level==="Intermediate"?"everyday words":"natural, richer vocabulary"}. Reply in 1-3 short sentences and end with a question. If the learner's LAST message has a grammar or word-choice mistake, include a fix; otherwise fix is null. Return ONLY JSON: {"reply":"...","fix":null or {"said":"...","better":"...","why":"max 12 words"}}\nConversation:\n${log}`;
+  try{
+    const j=await ask(p);
+    if(j.fix&&j.fix.better){fixes.push(j.fix);add("fx","Fix: “"+j.fix.said+"” → “"+j.fix.better+"” — "+j.fix.why);}
+    hist.push({t:j.reply});add("m ai",j.reply);speak(j.reply);$("note").textContent="";
+  }catch(e){$("note").textContent=e.message||"Something went wrong. Try again.";}
+  busy=false;
+}
+
+function send(t){
+  t=(t||$("txt").value).trim();if(!t||busy)return;
+  $("txt").value="";hist.push({t,me:1});add("m me",t);turn();
+}
+$("send").onclick=()=>send();
+$("txt").onkeydown=e=>{if(e.key==="Enter")send();};
+
+// voice input
+const MICMSG={"unsupported":"Voice input isn't supported in this browser. Please type instead.","not-allowed":"Microphone is blocked here. Allow it in your browser, or type your answer.","service-not-allowed":"Microphone is blocked here. Allow it in your browser, or type your answer.","audio-capture":"No microphone found.","no-speech":"I didn't hear anything. Try again.","network":"Voice needs an internet connection.","aborted":""};
+const micMsg=c=>MICMSG[c]!==undefined?MICMSG[c]:"Couldn't hear you. Check mic permission or type instead.";
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null;
+$("mic").onclick=()=>{
+  if(!SR){$("note").textContent=micMsg("unsupported");return;}
+  if(rec){rec.stop();return;}
+  try{speechSynthesis.cancel();}catch(e){}
+  rec=new SR();rec.lang="en-US";rec.interimResults=false;
+  rec.onstart=()=>{$("mic").classList.add("rec");$("note").textContent="Listening…";};
+  rec.onresult=e=>{const t=e.results[0][0].transcript;rec=null;send(t);};
+  rec.onerror=e=>{$("note").textContent=micMsg(e.error);};
+  rec.onend=()=>{$("mic").classList.remove("rec");rec=null;};
+  try{rec.start();}catch(e){rec=null;$("note").textContent=micMsg("");}
+};
+
+$("back").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}show("home");};
+$("again").onclick=()=>show("home");
+
+// vocabulary list
+function words(){try{return JSON.parse(localStorage.getItem("suw")||"[]");}catch(e){return[];}}
+function saveWords(a){try{const c=words();a.forEach(x=>{if(x&&x.w&&!c.some(y=>y.w===x.w))c.unshift({w:String(x.w),m:String(x.m||""),d:today()});});localStorage.setItem("suw",JSON.stringify(c.slice(0,100)));}catch(e){}renderWords();stats();}
+function renderWords(){const u=$("mw");u.innerHTML="";const c=words();$("wc").textContent=c.length?"("+c.length+")":"";(c.length?c:[{w:"Finish a session to save new words here",m:""}]).forEach(x=>{const l=document.createElement("li");l.textContent=x.m?x.w+" — "+x.m:x.w;u.appendChild(l);});}
+$("clr").onclick=()=>{try{localStorage.removeItem("suw");}catch(e){}renderWords();stats();};
+renderWords();
+
+// pronunciation practice
+const PH=["Could I have a medium latte, please?","I would like to book a table for two.","Nice to meet you. How long have you lived here?","Excuse me, where is the nearest train station?","I have been working here for three years.","Thank you so much for your help today.","Could you tell me how much this costs?","I think the weather will be better tomorrow."];
+let pi=0;
+function pshow(){$("pph").textContent=PH[pi];$("pres").textContent="Tap Listen, then the mic and repeat it.";}
+$("pbtn").onclick=()=>{pi=Math.floor(Math.random()*PH.length);pshow();show("pr");};
+$("pback").onclick=()=>{try{speechSynthesis.cancel();}catch(e){}show("home");};
+$("plisten").onclick=()=>speak(PH[pi],true);
+$("pnext").onclick=()=>{pi=(pi+1)%PH.length;pshow();};
+$("pmic").onclick=()=>{
+  if(!SR){$("pres").textContent=micMsg("unsupported");return;}
+  try{speechSynthesis.cancel();}catch(e){}
+  const r=new SR();r.lang="en-US";
+  r.onstart=()=>{$("pmic").classList.add("rec");$("pres").textContent="Listening…";};
+  r.onresult=e=>{
+    const heard=e.results[0][0].transcript;
+    const n=s=>s.toLowerCase().replace(/[^a-z' ]/g,"").split(/\s+/).filter(Boolean);
+    const t=n(PH[pi]),h=n(heard),miss=t.filter(w=>!h.includes(w));
+    const pct=Math.round((t.length-miss.length)/t.length*100);{const q=ls("sup_pr",[]);q.push(pct);lset("sup_pr",q.slice(-30));}
+    $("pres").textContent=""+"Score: "+pct+"%. I heard: “"+heard+"”"+(miss.length?". Practice: "+miss.join(", "):". Perfect!");
+  };
+  r.onerror=e=>{$("pres").textContent=micMsg(e.error);};
+  r.onend=()=>$("pmic").classList.remove("rec");
+  try{r.start();}catch(e){$("pres").textContent=micMsg("");}
+};
+
+// helpers
+document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
+const ls=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}};
+const lset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
+const today=()=>new Date().toISOString().slice(0,10);
+
+// level test
+const Q=[
+ {q:"She ___ to work every day.",o:["go","goes","going"],a:1},
+ {q:"We ___ dinner when the phone rang.",o:["were having","had","have had"],a:0},
+ {q:"If I ___ more time, I would travel more.",o:["have","will have","had"],a:2},
+ {q:"He suggested ___ a taxi.",o:["to take","take","taking"],a:2},
+ {q:"Hardly ___ arrived when the meeting began.",o:["had she","she had","she has"],a:0}
+];
+let qi=0,qs=0;
+function qshow(){const x=Q[qi];$("pq").textContent=(qi+1)+"/"+Q.length;$("qt").textContent=x.q;$("qo").innerHTML="";x.o.forEach((t,i)=>{const b=document.createElement("button");b.className="pill";b.style.cssText="display:block;width:100%;margin:6px 0;padding:12px;text-align:left";b.textContent=t;b.onclick=()=>{if(i===x.a)qs++;qi++;qi<Q.length?qshow():qdone();};$("qo").appendChild(b);});}
+function qdone(){level=qs<=1?"Beginner":qs<=3?"Intermediate":"Advanced";[...$("levels").children].forEach(b=>b.classList.toggle("on",b.dataset.l===level));$("pq").textContent="";$("qt").textContent="Your level: "+level+" ("+qs+"/"+Q.length+")";$("qo").innerHTML="";const b=document.createElement("button");b.className="btn";b.textContent="Start practicing";b.onclick=()=>show("home");$("qo").appendChild(b);}
+$("ptbtn").onclick=()=>{qi=0;qs=0;qshow();show("pt");};
+
+// progress
+function logSession(s,k){const a=ls("sup",[]);a.push({d:today(),s,l:level,k:k&&typeof k==="object"?{g:+k.grammar||0,v:+k.vocabulary||0,f:+k.fluency||0}:null});lset("sup",a.slice(-200));stats();renderLv();}
+$("pgbtn").onclick=()=>{
+  const a=ls("sup",[]),box=$("pgb");box.innerHTML="";
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-(6-i)*864e5);return {k:d.toISOString().slice(0,10),l:d.toLocaleDateString("en",{weekday:"short"})};});
+  const cnt=days.map(d=>a.filter(x=>x.d===d.k).length),mx=Math.max(1,...cnt);
+  const wk=a.filter(x=>x.s&&days.some(d=>d.k===x.d)),avg=wk.length?(wk.reduce((t,x)=>t+x.s,0)/wk.length).toFixed(1):"-";
+  const h=document.createElement("h2");h.textContent=cnt.reduce((t,c)=>t+c,0)+" sessions this week · avg score "+avg;box.appendChild(h);
+  const g=document.createElement("div");g.style.cssText="display:flex;gap:6px;align-items:flex-end;height:120px";
+  days.forEach((d,i)=>{const c=document.createElement("div");c.style.cssText="flex:1;text-align:center;font-size:12px";const bar=document.createElement("div");bar.style.cssText="background:var(--ac);border-radius:6px;height:"+(cnt[i]/mx*90)+"px;min-height:3px;opacity:"+(cnt[i]?1:.25);c.appendChild(bar);c.append(d.l);g.appendChild(c);});
+  box.appendChild(g);box.appendChild(weeklyNode());box.appendChild(skillsNode());box.appendChild(badgesNode());show("pg");
+};
+
+// premium (demo)
+let FREE=3;
+const prem=()=>ls("sup_prem",false);
+function stats(){try{$("s1").textContent=$("streak").textContent;$("s2").textContent=ls("suw",[]).length;$("s3").textContent=ls("sup",[]).length;}catch(e){}}
+stats();
+function planTxt(){syncFree();renderList();$("plan").textContent=prem()?"Premium active (demo)":"Free: "+Math.max(0,FREE-ls("sup_n",0))+" of "+FREE+" conversations left";}
+planTxt();
+$("pwbtn").onclick=()=>{$("pwmsg").textContent="";show("pw");};
+$("pw").addEventListener("click",e=>{const p=e.target.dataset.p;if(!p)return;lset("sup_prem",p);planTxt();show("home");});
+
+// tabs, words view, profile, onboarding
+$("wd").appendChild($("mw").parentElement);
+$("pgbtn").style.display="none";
+const saveOb=p=>lset("sup_ob",Object.assign(ls("sup_ob",{}),p));
+const syncLv=()=>[...$("levels").children].forEach(b=>b.classList.toggle("on",b.dataset.l===level));
+function greet(){const o=ls("sup_ob",{}),b=document.querySelector(".brand .mu");if(b)b.textContent=o.name?"Welcome back, "+o.name:"AI English speaking coach";}
+function openPf(){
+  const o=ls("sup_ob",{});
+  {const a=ls("sup_acct",null);$("pfacct").textContent=a?a.name+" · "+a.email:"";}
+  $("pfgoal").textContent=(o.name?o.name+" · ":"")+(o.goal||"No goal set yet");
+  $("pflv").innerHTML=LV.map(l=>`<button class="pill ${l===level?"on":""}" data-l="${l}">${l}</button>`).join("");
+  $("pfpl").textContent=prem()?"Premium (demo)":"Free · "+Math.max(0,FREE-ls("sup_n",0))+" of "+FREE+" conversations left";
+  pfFill();banner();show("pf");
+}
+$("pflv").onclick=e=>{const l=e.target.dataset.l;if(!l)return;level=l;saveOb({level:l});syncLv();openPf();};
+$("pfup").onclick=()=>{$("pwmsg").textContent="";show("pw");};
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(t==="pg")$("pgbtn").onclick();else if(t==="pf")openPf();else show(t);});
+const ap=t=>{const r=document.documentElement;t==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",t);};
+ap(ls("sup_th","auto"));
+document.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{ap(b.dataset.th);lset("sup_th",b.dataset.th);});
+let rc=0;
+$("rst").onclick=()=>{if(!rc){rc=1;$("rst").textContent="Tap again to confirm";return;}try{["su","suw","sup","sup_u","sup_prem","sup_ob","sup_th","sup_acct","sup_sess","sup_n","sup_fr","sup_myconf","sup_av","sup_hist","sup_fav","sup_set","sup_fb","sup_dr"].forEach(k=>localStorage.removeItem(k));}catch(e){}location.reload();};
+
+const GOALS=["Work","Travel","Study","Daily life"];
+let ost=0,od={};
+function pills(arr,key){const d=document.createElement("div");d.className="row";arr.forEach(t=>{const b=document.createElement("button");b.className="pill"+(od[key]===t?" on":"");b.textContent=t;b.onclick=()=>{od[key]=t;obRender();};d.appendChild(b);});return d;}
+function obRender(){
+  const c=$("obc"),h=document.createElement("h1"),p=document.createElement("p");p.className="mu";
+  $("dots").innerHTML=[0,1,2].map(i=>`<i class="${i<=ost?"on":""}"></i>`).join("");
+  c.innerHTML="";
+  if(ost===0){h.textContent="Welcome to SpeakUp";p.textContent="Practice real conversations out loud with an AI partner and get instant feedback. What should we call you?";c.append(h,p);const i=document.createElement("input");i.id="obname";i.placeholder="Your name (optional)";i.value=od.name||"";i.style.width="100%";c.appendChild(i);}
+  if(ost===1){h.textContent="What is your goal?";p.textContent="Pick a goal and your current level. You can change both later.";c.append(h,p,pills(GOALS,"goal"));const l=pills(LV,"level");l.style.marginTop="14px";c.appendChild(l);}
+  if(ost===2){h.textContent="You are all set";p.textContent="Allow your microphone when asked so you can speak. You can always type instead. The free plan includes "+FREE+" conversations in total.";c.append(h,p);}
+  $("obn").textContent=ost===2?"Start practicing":"Continue";
+}
+function obOpen(){ost=0;od=Object.assign({level:level},ls("sup_ob",{}));obRender();$("ob").classList.remove("hide");}
+$("obn").onclick=()=>{
+  if(ost===0){const v=$("obname");od.name=v?v.value.trim():"";}
+  if(ost<2){ost++;obRender();return;}
+  level=od.level||level;saveOb({name:od.name,goal:od.goal,level,done:1});syncLv();greet();$("ob").classList.add("hide");show("home");
+};
+$("obs").onclick=()=>{saveOb({done:1});$("ob").classList.add("hide");show("home");};
+$("rstob").onclick=obOpen;
+
+
+// account gate
+async function hashPw(pw,salt){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+pw));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}catch(e){let h=5381;const t=salt+pw;for(let i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return "f"+h;}}
+let acm="signup";
+function acOpen(){acm=ls("sup_acct",null)?"login":"signup";acRender();$("ac").classList.remove("hide");}
+function acRender(){
+  const c=$("acc"),su=acm==="signup";c.innerHTML="";
+  const h=document.createElement("h1"),p=document.createElement("p");p.className="mu";
+  h.textContent=su?"Create your account":"Welcome back";
+  p.textContent=su?"Create a free account to start practicing. It takes less than a minute.":"Log in to continue.";
+  c.append(h,p);
+  const f=(id,ph,type,ac)=>{const i=document.createElement("input");i.id=id;i.placeholder=ph;i.type=type;i.autocomplete=ac;i.style.cssText="width:100%;margin-top:10px";c.appendChild(i);};
+  if(su)f("acn","Your name","text","name");
+  f("ace","Email","email","email");f("acp",su?"Password (8+ characters)":"Password","password",su?"new-password":"current-password");
+  if(su){f("acr","Friend's invite code (optional)","text","off");const q=new URLSearchParams(location.search).get("ref");if(q)$("acr").value=q.toUpperCase();}
+  const e=document.createElement("div");e.id="acerr";e.style.cssText="color:#dc2626;font-size:14px;min-height:22px;margin-top:8px";c.appendChild(e);
+  $("acb").textContent=su?"Create account":"Log in";
+  $("acalt").style.display=su?"none":"inline-block";
+}
+$("acalt").onclick=()=>{try{localStorage.removeItem("sup_acct");}catch(e){}acm="signup";acRender();};
+$("acb").onclick=async()=>{
+  const em=$("ace").value.trim().toLowerCase(),pw=$("acp").value,err=$("acerr");
+  if(!/^\S+@\S+\.\S+$/.test(em)){err.textContent="Enter a valid email address.";return;}
+  if(acm==="signup"){
+    const nm=$("acn").value.trim();
+    if(!nm){err.textContent="Enter your name.";return;}
+    if(pw.length<8){err.textContent="Use at least 8 characters for your password.";return;}
+    const ref=($("acr")?$("acr").value.trim().toUpperCase():"");
+    if(ref&&!/^SU-[A-Z0-9]{6}$/.test(ref)){err.textContent="Invite code looks invalid.";return;}
+    const salt=Math.random().toString(36).slice(2);
+    lset("sup_acct",{name:nm,email:em,salt,h:await hashPw(pw,salt)});saveOb({name:nm});
+    if(ref){const tag=Math.random().toString(36).slice(2,6).toUpperCase().padEnd(4,"0");lset("sup_myconf","FR-"+tag+"-"+h4(ref+tag,4));}
+  }else{
+    const a=ls("sup_acct",null);
+    if(!a||a.email!==em||a.h!==await hashPw(pw,a.salt)){err.textContent="Email or password is incorrect.";return;}
+  }
+  lset("sup_sess",true);$("ac").classList.add("hide");greet();show("home");
+  if(!ls("sup_ob",{}).done)obOpen();
+};
+$("lgo").onclick=()=>{lset("sup_sess",false);show("home");acOpen();};
+
+// level progress and advice
+const NEED={Beginner:60,Intermediate:100};
+const STEPS={Beginner:[["A1",0,30],["A2",30,60]],Intermediate:[["B1",0,50],["B2",50,100]],Advanced:[["C1",0,100],["C2",100,null]]};
+function lvStats(){const a=ls("sup",[]).filter(x=>!x.l||x.l===level);const xp=a.reduce((t,x)=>t+(x.s||0),0),last=a.slice(-3);return{xp,avg:last.length===3?last.reduce((t,x)=>t+(x.s||0),0)/3:null};}
+function advice(){
+  if(ls("sup_dis",-1)===ls("sup",[]).length)return null;
+  const st=lvStats(),i=LV.indexOf(level),need=NEED[level];
+  if(i<LV.length-1&&((st.avg!==null&&st.avg>=8)||(need&&st.xp>=need)))return{dir:"up",to:LV[i+1]};
+  if(i>0&&st.avg!==null&&st.avg<=4)return{dir:"down",to:LV[i-1]};
+  return null;
+}
+function adviceNode(ad){
+  const d=document.createElement("div");d.style.marginTop="10px";
+  const t=document.createElement("b");t.textContent=ad.dir==="up"?"Ready to level up?":"Need an easier level?";
+  const r=document.createElement("div");r.className="row";r.style.marginTop="8px";
+  const y=document.createElement("button");y.className="btn";y.textContent=ad.dir==="up"?"Move up":"Move down";
+  const p=document.createElement("span");p.className="mu";p.textContent=ad.to;
+  const n=document.createElement("button");n.className="pill";n.textContent="Not now";
+  const done=()=>{const c=d.closest("#repbody .card");if(c)c.remove();renderLv();};
+  y.onclick=()=>{level=ad.to;saveOb({level});syncLv();lset("sup_dis",-1);done();};
+  n.onclick=()=>{lset("sup_dis",ls("sup",[]).length);done();};
+  r.append(y,p,n);d.append(t,r);return d;
+}
+function renderLv(){
+  const st=lvStats(),i=LV.indexOf(level),need=NEED[level];
+  const stp=STEPS[level],sc=[...stp].reverse().find(x=>st.xp>=x[1])||stp[0],si=stp.indexOf(sc),nx=stp[si+1]||(STEPS[LV[i+1]]||[])[0]||sc;
+  $("lvf").textContent=sc[0];$("lvt").textContent=nx[0];
+  const hi=sc[2];$("lvb").style.width=(hi?Math.min(100,(st.xp-sc[1])/(hi-sc[1])*100):100)+"%";
+  $("lvx").textContent=hi?Math.round(st.xp)+" / "+hi+" XP":Math.round(st.xp)+" XP";
+  const hh=$("lvh");hh.innerHTML="";LV.forEach((b,k)=>{if(k)hh.append(" \u00b7 ");const e=document.createElement("span");e.textContent=b;hh.append(e," "+["A1\u2013A2","B1\u2013B2","C1\u2013C2"][k]);});
+  const box=$("lva");box.innerHTML="";const ad=advice();if(ad)box.appendChild(adviceNode(ad));
+}
+function showAdv(){const ad=advice();if(!ad)return;const c=document.createElement("div");c.className="card";c.appendChild(adviceNode(ad));$("repbody").prepend(c);}
+
+function skillsNode(){
+  const d=document.createElement("div");d.style.marginTop="18px";
+  const h=document.createElement("h2");h.textContent="Skills";d.appendChild(h);
+  const a=ls("sup",[]).filter(x=>x.k).slice(-5),pr=ls("sup_pr",[]).slice(-10);
+  const avg=(arr,f)=>arr.length?arr.reduce((t,x)=>t+f(x),0)/arr.length:null;
+  const rows=[["Grammar",avg(a,x=>x.k.g)],["Vocabulary",avg(a,x=>x.k.v)],["Fluency",avg(a,x=>x.k.f)],["Pronunciation",pr.length?avg(pr,x=>x)/10:null]];
+  const vals=rows.filter(r=>r[1]);const weak=vals.length>1?vals.reduce((m,r)=>r[1]<m[1]?r:m):null;
+  rows.forEach(([n,v])=>{
+    const r=document.createElement("div");r.style.margin="10px 0";
+    const t=document.createElement("div");t.className="row";t.style.justifyContent="space-between";
+    const l=document.createElement("span");l.textContent=n;const x=document.createElement("span");x.className="mu";x.textContent=v?v.toFixed(1)+" / 10":"\u2013";
+    t.append(l,x);const b=document.createElement("div");b.className="pb";b.style.margin="4px 0";const i=document.createElement("i");i.style.width=(v?v*10:0)+"%";b.appendChild(i);r.append(t,b);d.appendChild(r);
+  });
+  if(weak){const q=document.createElement("p");q.className="mu";q.append("Focus: ");const w=document.createElement("b");w.textContent=weak[0];q.appendChild(w);d.appendChild(q);}
+  return d;
+}
+// invites
+const h4=(t,n)=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h.toString(36).toUpperCase().padStart(n,"0").slice(-n);};
+function frCount(){return ls("sup_fr",[]).length;}
+function unlockedN(){return prem()?SC.length:Math.min(SC.length,3+2*frCount());}
+function syncFree(){FREE=3+2*frCount();}
+function myCode(){const a=ls("sup_acct",null);return "SU-"+h4((a?a.email:"guest")+"speakup",6);}
+const BASE="https://claude.ai/artifact/RPhdA1KuCUryWC2ScnqCBJ";
+const inviteLink=()=>BASE+"?ref="+myCode();
+function ivRender(){$("ivn").textContent=frCount();$("ivu").textContent=unlockedN();$("ivp").style.width=unlockedN()/SC.length*100+"%";$("ivc").value=myCode();}
+function banner(){bday();const c=ls("sup_myconf",null);$("ivb").classList.toggle("hide",!c);if(c)$("ivbc").textContent=c;}
+async function copyTxt(t,btn){try{await navigator.clipboard.writeText(t);}catch(e){}const o=btn.textContent;btn.textContent="Copied!";setTimeout(()=>btn.textContent=o,1500);}
+$("pfiv").onclick=()=>show("iv");
+$("ivcp").onclick=e=>copyTxt(myCode(),e.target);$("ivbcp").onclick=e=>copyTxt(ls("sup_myconf",""),e.target);
+$("ivsh").onclick=async e=>{const t="Practice English speaking with SpeakUp. Use my invite code "+myCode()+" when you sign up.";try{if(navigator.share){await navigator.share({title:"SpeakUp",text:t,url:inviteLink()});return;}}catch(x){return;}copyTxt(t+" "+inviteLink(),e.target);};
+$("ivrb").onclick=()=>{
+  const m=$("ivm"),v=$("ivr").value.trim().toUpperCase(),x=v.match(/^FR-([A-Z0-9]{4})-([A-Z0-9]{4})$/);
+  const fail=t=>{m.style.color="#dc2626";m.textContent=t;};
+  if(!x){fail("That code doesn't look right.");return;}
+  if(x[2]!==h4(myCode()+x[1],4)){fail("This code isn't for your invite.");return;}
+  const fr=ls("sup_fr",[]);if(fr.includes(x[1])){fail("This code was already used.");return;}
+  fr.push(x[1]);lset("sup_fr",fr);syncFree();planTxt();ivRender();$("ivr").value="";
+  m.style.color="#16a34a";m.textContent="Friend added! 2 more scenarios unlocked.";
+};
+// profile
+let pdg=1,pgl="";
+function avStyle(el){if(!el)return;let a=null;try{a=localStorage.getItem("sup_av");}catch(e){}const o=ls("sup_acct",null),nm=(o&&o.name)||"S";if(a){el.style.backgroundImage="url("+a+")";el.textContent="";}else{el.style.backgroundImage="";el.textContent=nm.trim().slice(0,1).toUpperCase();}}
+function renderAv(){avStyle($("pfav"));avStyle(document.querySelector("#home .logo"));}
+function pillsRow(el,arr,which){el.innerHTML="";arr.forEach(t=>{const b=document.createElement("button");const on=which==="pdg"?String(pdg)===t:pgl===t;b.className="pill"+(on?" on":"");b.textContent=t;b.onclick=()=>{if(which==="pdg")pdg=+t;else pgl=t;pillsRow(el,arr,which);ptoday();};el.appendChild(b);});}
+function ptoday(){const n=ls("sup",[]).filter(x=>x.d===today()).length;$("pftd").textContent="Today: "+n+" / "+pdg+" sessions";}
+function pfFill(){
+  const o=ls("sup_ob",{}),a=ls("sup_acct",null);
+  $("pfn").value=(a&&a.name)||o.name||"";$("pfname").textContent=$("pfn").value;$("pfmail").textContent=a?a.email:"";
+  const ns=$("pfnat");if(!ns.options.length){const e0=document.createElement("option");e0.value="";e0.textContent=nsL();ns.appendChild(e0);LN.forEach(([k,n])=>{const op=document.createElement("option");op.value=k;op.textContent=n;ns.appendChild(op);});}
+  ns.options[0].textContent=nsL();ns.value=o.native||"";$("pfrt").value=o.rt||"";pdg=o.dg||1;pgl=o.goal||"";
+  pillsRow($("pfdg"),["1","2","3"],"pdg");pillsRow($("pfgl"),GOALS,"pgl");ptoday();renderAv();
+  $("pfbio").value=o.bio||"";$("pfbc").textContent=$("pfbio").value.length+" / 160";$("pfbd").value=o.bd||"";$("pfbd").max=today();
+  fillCountries($("pfct"),o.country);renderSub(o);$("pfbp").textContent=o.bio||"";
+}
+function pnote(id,t,bad){const m=$(id);m.style.color=bad?"#dc2626":"#16a34a";m.textContent=t;}
+$("avf").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(!f.type.startsWith("image/")){pnote("avm","Please choose an image file.",1);return;}
+  const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas"),S=256;c.width=c.height=S;const m=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,S,S);try{localStorage.setItem("sup_av",c.toDataURL("image/jpeg",.85));pnote("avm","Photo updated.",0);}catch(x){pnote("avm","Couldn't save the photo.",1);}renderAv();};im.onerror=()=>pnote("avm","Couldn't read that image.",1);im.src=r.result;};
+  r.readAsDataURL(f);e.target.value="";
+};
+$("avr").onclick=()=>{try{localStorage.removeItem("sup_av");}catch(e){}pnote("avm","Photo removed.",0);renderAv();};
+$("pfsv").onclick=()=>{
+  const nm=$("pfn").value.trim();if(!nm){pnote("pfmsg","Enter your name.",1);return;}
+  const a=ls("sup_acct",null);if(a){a.name=nm;lset("sup_acct",a);}
+  saveOb({name:nm,native:$("pfnat").value,rt:$("pfrt").value,dg:pdg,goal:pgl,bio:$("pfbio").value.trim(),bd:$("pfbd").value,country:$("pfct").value});
+  greet();pfFill();$("pfacct").textContent=a?a.name+" \u00b7 "+a.email:"";$("pfgoal").textContent=nm+" \u00b7 "+(pgl||"No goal set yet");pnote("pfmsg","Saved.",0);
+};
+$("pcb").onclick=async()=>{
+  const a=ls("sup_acct",null),cw=$("pcw").value,nw=$("pnw").value;if(!a)return;
+  if(a.h!==await hashPw(cw,a.salt)){pnote("pcm","Current password is incorrect.",1);return;}
+  if(nw.length<8){pnote("pcm","Use at least 8 characters for your password.",1);return;}
+  a.salt=Math.random().toString(36).slice(2);a.h=await hashPw(nw,a.salt);lset("sup_acct",a);
+  $("pcw").value="";$("pnw").value="";pnote("pcm","Password updated.",0);
+};
+let dc=0;$("delacc").onclick=()=>{if(!dc){dc=1;$("delacc").textContent="Tap again to delete";return;}try{localStorage.clear();}catch(e){}location.reload();};
+const CC="US GB CA AU NZ IE IN PK BD LK NP CN JP KR TH VN ID PH MY SG SA AE EG MA DZ TN IQ JO LB KW QA TR IR FR DE ES IT PT BR MX AR CO CL PE RU UA PL NL SE NG KE ZA AF AL AO AM AT AZ BH BY BE BO BA BG KH CM HR CU CY CZ DK DO EC SV EE ET FI GE GH GR GT HN HK HU IS IL JM KZ KG LA LV LY LT LU MK MG MV MT MN ME MM NA NI NO OM PA PY PR RO RS SK SI SO SD SY TW TJ TZ TM UG UY UZ VE YE ZM ZW BT BN BW CD CI CR GN HT KP MZ RW SN SS".split(" ");
+const NSL={es:"Sin definir",fr:"Non défini",pt:"Não definido",ar:"غير محدد",hi:"सेट नहीं",zh:"未设置",th:"ยังไม่ได้ตั้ง",ja:"未設定",vi:"Chưa đặt"};
+function nsL(){return NSL[lang]||"Not set";}
+function cname(c){try{return new Intl.DisplayNames([lang||"en"],{type:"region"}).of(c);}catch(e){return c;}}
+function fillCountries(sel,cur){sel.innerHTML="";const e0=document.createElement("option");e0.value="";e0.textContent=nsL();sel.appendChild(e0);CC.map(c=>[c,cname(c)]).sort((a,b)=>a[1].localeCompare(b[1])).forEach(([c,n])=>{const o=document.createElement("option");o.value=c;o.textContent=n;sel.appendChild(o);});sel.value=cur||"";}
+$("pfbio").oninput=()=>{$("pfbc").textContent=$("pfbio").value.length+" / 160";};
+function ageOf(bd){if(!bd)return null;const d=new Date(bd+"T00:00:00"),n=new Date();let a=n.getFullYear()-d.getFullYear();const m=n.getMonth()-d.getMonth();if(m<0||(m===0&&n.getDate()<d.getDate()))a--;return a>=0&&a<120?a:null;}
+function renderSub(o){const el=$("pfsub");el.innerHTML="";const parts=[];if(o.country){const x=document.createElement("span");x.textContent=cname(o.country);parts.push(x);}const a=ageOf(o.bd);if(a!==null){const x=document.createElement("span");x.textContent=a+" years old";parts.push(x);}parts.forEach((x,i)=>{if(i)el.append(" \u00b7 ");el.appendChild(x);});}
+function bday(){const o=ls("sup_ob",{}),el=$("bdb");let on=false;if(o.bd){const d=new Date(),[,m,dd]=o.bd.split("-").map(Number),y=d.getFullYear(),leap=(y%4===0&&y%100!==0)||y%400===0,sh=m===2&&dd===29&&!leap;on=d.getMonth()+1===m&&d.getDate()===(sh?28:dd);}el.classList.toggle("hide",!on);if(on)$("bdt").textContent="Happy birthday, "+(o.name||"friend")+"!";}
+document.querySelectorAll(".lsel").forEach(sl=>sl.addEventListener("change",()=>setTimeout(()=>{fillCountries($("pfct"),$("pfct").value);const n=$("pfnat");if(n.options.length)n.options[0].textContent=nsL();renderSub(ls("sup_ob",{}));},30)));
+// settings, history, favorites, achievements, help
+const S=()=>Object.assign({voice:true,rate:"normal",size:"m"},ls("sup_set",{}));
+const setS=p=>lset("sup_set",Object.assign(S(),p));
+function applySize(){document.body.style.fontSize={s:"14px",m:"16px",l:"18px"}[S().size]||"16px";}
+applySize();
+function openSt(){
+  const st=S();$("stv").checked=st.voice!==false;
+  [["strate","rate",[["slow","Slow"],["normal","Normal"],["fast","Fast"]]],["stsize","size",[["s","Small"],["m","Medium"],["l","Large"]]]].forEach(([id,k,opts])=>{const el=$(id);el.innerHTML="";opts.forEach(([v,t])=>{const b=document.createElement("button");b.className="pill"+(st[k]===v?" on":"");b.textContent=t;b.onclick=()=>{setS({[k]:v});applySize();openSt();};el.appendChild(b);});});
+  show("st");
+}
+$("stv").onchange=()=>setS({voice:$("stv").checked});
+$("stch").onclick=()=>{try{localStorage.removeItem("sup_hist");}catch(e){}pnote("stm","History cleared.",0);};
+$("stcp").onclick=async()=>{const o={};["sup","suw","sup_ob","sup_hist","sup_fav","sup_set","su","sup_fr","sup_pr"].forEach(k=>{const v=ls(k,null);if(v!==null)o[k]=v;});try{await navigator.clipboard.writeText(JSON.stringify(o,null,1));pnote("stm","Copied to clipboard.",0);}catch(e){pnote("stm","Couldn't copy.",1);}};
+function saveHist(){const a=ls("sup_hist",[]),id=Date.now();a.push({id,d:new Date().toISOString(),sc:sc.t,lv:level,msgs:hist.map(m=>({me:!!m.me,t:m.t})),fx:fixes.slice()});lset("sup_hist",a.slice(-20));return id;}
+function setHistScore(id,v){const a=ls("sup_hist",[]),h=a.find(x=>x.id===id);if(h){h.score=v;lset("sup_hist",a);}}
+function openHs(){
+  const a=ls("sup_hist",[]).slice().reverse(),box=$("hsl");box.innerHTML="";
+  if(!a.length){const p=document.createElement("p");p.className="mu";p.textContent="No sessions yet";box.appendChild(p);}
+  a.forEach(h=>{const b=document.createElement("button");b.className="card sc row-card";const t=document.createElement("span");t.className="grow";const n=document.createElement("b");n.textContent=h.sc;const m=document.createElement("span");m.className="meta";const d=document.createElement("span");d.className="mu";d.textContent=new Date(h.d).toLocaleDateString(undefined,{month:"short",day:"numeric"});m.appendChild(d);if(h.score){const g=document.createElement("span");g.className="tag";g.textContent=h.score+"/10";m.appendChild(g);}t.append(n,m);const c=document.createElement("span");c.className="chev";c.textContent="\u203a";b.append(t,c);b.onclick=()=>openHd(h);box.appendChild(b);});
+  show("hs");
+}
+function openHd(h){
+  $("hdt").textContent=h.sc;const c=$("hdc");c.innerHTML="";
+  h.msgs.forEach(m=>{const d=document.createElement("div");d.className="m "+(m.me?"me":"ai");d.textContent=m.t;c.appendChild(d);});
+  (h.fx||[]).forEach(f=>{const d=document.createElement("div");d.className="fx";d.textContent="Fix: \u201c"+f.said+"\u201d \u2192 \u201c"+f.better+"\u201d \u2014 "+f.why;c.appendChild(d);});
+  show("hd");
+}
+function favs(){return ls("sup_fav",[]);}
+function toggleFav(t){const f=favs(),i=f.indexOf(t);if(i>=0)f.splice(i,1);else f.push(t);lset("sup_fav",f);renderList();}
+$("sq").oninput=()=>{sq=$("sq").value;renderList();};
+function badgesNode(){
+  const d=document.createElement("div");d.style.marginTop="18px";const h=document.createElement("h2");h.textContent="Achievements";d.appendChild(h);
+  const a=ls("sup",[]),st=ls("su",{}).n||0;
+  const B=[["First conversation","chat",a.length>=1],["5 sessions","target",a.length>=5],["3-day streak","trend",st>=3],["7-day streak","trend",st>=7],["10 words saved","book",words().length>=10],["Score 9+","star",a.some(x=>x.s>=9)],["Level up","award",level!=="Beginner"],["Invited a friend","gift",frCount()>=1]];
+  const g=document.createElement("div");g.className="badges";
+  B.forEach(([t,i,ok])=>{const b=document.createElement("div");b.className="badge"+(ok?" on":"");b.innerHTML=ico(ok?i:"lock");const l=document.createElement("span");l.textContent=t;b.appendChild(l);g.appendChild(b);});
+  d.appendChild(g);return d;
+}
+$("mhs").onclick=openHs;$("mst").onclick=openSt;$("mhp").onclick=()=>show("hp");
+document.querySelectorAll(".back2").forEach(b=>b.onclick=()=>openPf());
+$("hdb").onclick=()=>openHs();
+$("fbs").onclick=()=>{const v=$("fbt").value.trim();if(!v){pnote("fbm","Write a message first.",1);return;}const a=ls("sup_fb",[]);a.push({d:new Date().toISOString(),t:v});lset("sup_fb",a.slice(-20));$("fbt").value="";pnote("fbm","Thanks! Your feedback was saved on this device.",0);};
+const WL=[["schedule", "a plan of times for doing things", "What is your schedule for tomorrow?"], ["reservation", "a booking for a table or a room", "I have a reservation for two."], ["appointment", "a planned meeting at a set time", "I have an appointment at three o'clock."], ["delay", "when something happens later than planned", "My flight has a two-hour delay."], ["recommend", "to say that something is good", "Can you recommend a good restaurant?"], ["available", "free to use or to meet", "Is this seat available?"], ["experience", "things you have done or learned", "I have five years of experience."], ["improve", "to get better", "I want to improve my English."], ["deadline", "the last time to finish something", "The deadline is Friday."], ["comfortable", "pleasant and relaxing", "This chair is very comfortable."], ["familiar", "well known to you", "Your name sounds familiar."], ["afford", "to have enough money for something", "I can't afford a new phone."], ["borrow", "to take something and give it back later", "Can I borrow your pen?"], ["receipt", "a paper that shows you paid", "Could I have the receipt, please?"], ["refund", "money that is returned to you", "I would like a refund."], ["direction", "the way to go", "Can you give me directions?"], ["suggest", "to offer an idea", "I suggest we take a taxi."], ["reliable", "someone or something you can trust", "He is a reliable friend."], ["prefer", "to like one thing more than another", "I prefer tea to coffee."], ["organize", "to put things in order", "I need to organize my notes."], ["apologize", "to say you are sorry", "I apologize for being late."], ["convenient", "easy and useful", "The hotel is in a convenient place."], ["manage", "to be able to do something difficult", "I managed to finish on time."], ["purchase", "to buy", "I'd like to purchase two tickets."], ["requirement", "something you must have or do", "A passport is a requirement."], ["postpone", "to move to a later time", "Let's postpone the meeting."], ["predict", "to say what will happen", "It is hard to predict the weather."], ["confident", "sure about yourself", "I feel confident about my speech."], ["journey", "a long trip", "It was a long journey."], ["grateful", "thankful", "I'm grateful for your help."]];
+function todayWord(){return WL[Math.floor(Date.now()/864e5)%WL.length];}
+function wotd(){const w=todayWord();$("wdw").textContent=w[0];$("wdm").textContent=w[1];$("wde").textContent="\u201c"+w[2]+"\u201d";const sv=words().some(x=>x.w===w[0]),b=$("wds");b.textContent=sv?"Saved!":"Save word";b.disabled=sv;}
+$("wdl").onclick=()=>speak(todayWord()[0]+". "+todayWord()[2],true);
+$("wds").onclick=()=>{const w=todayWord();saveWords([{w:w[0],m:w[1]}]);wotd();};
+function weeklyNode(){
+  const a=ls("sup",[]),day=n=>new Date(Date.now()-n*864e5).toISOString().slice(0,10);
+  const wk=new Set([0,1,2,3,4,5,6].map(day)),pw=new Set([7,8,9,10,11,12,13].map(day));
+  const cur=a.filter(x=>wk.has(x.d)),prev=a.filter(x=>pw.has(x.d));
+  const days=new Set(cur.map(x=>x.d)).size,scs=cur.filter(x=>x.s),avg=scs.length?(scs.reduce((t,x)=>t+x.s,0)/scs.length).toFixed(1):"\u2013";
+  const nw=words().filter(x=>x.d&&wk.has(x.d)).length;
+  const sk=[["Grammar","g"],["Vocabulary","v"],["Fluency","f"]].map(([n,k])=>{const v=cur.filter(x=>x.k&&x.k[k]);return [n,v.length?v.reduce((t,x)=>t+x.k[k],0)/v.length:null];}).filter(r=>r[1]!==null);
+  const best=sk.length?sk.reduce((m,r)=>r[1]>m[1]?r:m):null,low=sk.length>1?sk.reduce((m,r)=>r[1]<m[1]?r:m):null;
+  const d=document.createElement("div");d.className="card";d.style.marginTop="14px";const h=document.createElement("h2");h.textContent="Weekly summary";d.appendChild(h);
+  const row=(l,v,ex)=>{const r=document.createElement("div");r.className="row";r.style.cssText="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)";const a1=document.createElement("span");a1.textContent=l;const b=document.createElement("span"),v1=document.createElement("b");v1.textContent=v;b.appendChild(v1);if(ex){const e=document.createElement("span");e.className="mu";e.style.cssText="font-size:12px;margin-inline-start:6px";e.append(ex+" ");const s2=document.createElement("span");s2.textContent="vs last week";e.appendChild(s2);b.appendChild(e);}r.append(a1,b);d.appendChild(r);};
+  const diff=cur.length-prev.length;
+  row("Sessions",cur.length,(diff>=0?"+":"")+diff);row("Practice days",days+" / 7");row("Average score",avg);row("New words",nw);row("Strongest skill",best?best[0]:"\u2013");row("Needs focus",low?low[0]:"\u2013");
+  return d;
+}
+// dictionary
+const NATN={es:"Spanish",fr:"French",pt:"Portuguese",ar:"Arabic",hi:"Hindi",zh:"Chinese",th:"Thai",ja:"Japanese",vi:"Vietnamese"};
+const LOCALD={};WL.forEach(([w,d,e])=>{LOCALD[w]={valid:true,word:w,phonetic:"",meanings:[{pos:"",def:d,ex:e}],synonyms:[],translation:""};});
+function cleanWord(t){
+  const raw=(t||"").toLowerCase().replace(/[^a-z' -]/g," ").split(/\s+/).filter(Boolean);
+  const stop=/^(what|does|do|is|the|a|an|meaning|of|define|definition|mean|means|word|how|to|say|please|tell|me|about|in|english)$/;
+  const f=raw.filter(x=>!stop.test(x)),use=f.length?f:raw;
+  return use.length?use[use.length>2?use.length-1:0]:"";
+}
+let dbusy=false;
+async function lookup(q){
+  const w=cleanWord(q);if(!w){$("dnote").textContent="Type or say a word";return;}
+  if(dbusy)return;dbusy=true;$("dq").value=w;$("dnote").textContent="Looking it up\u2026";$("dres").innerHTML="";
+  let r=null,err=null;
+  try{
+    const nn=NATN[ls("sup_ob",{}).native]||"";
+    r=await ask('You are an English dictionary for learners. Word: "'+w+'". If it is not a real English word, return ONLY {"valid":false,"suggest":"closest real English word or empty"}. Otherwise return ONLY JSON: {"valid":true,"word":"the word","phonetic":"IPA","meanings":[{"pos":"part of speech","def":"simple definition","ex":"short example sentence"}],"synonyms":["up to 4"],"translation":"'+(nn?"the word translated into "+nn:"")+'"} with at most 3 meanings.');
+  }catch(e){err=e;}
+  if(!r&&LOCALD[w])r=LOCALD[w];
+  $("dnote").textContent="";
+  if(!r)$("dnote").textContent=(err&&err.message)||"Something went wrong. Try again.";else renderDef(r,w);
+  dbusy=false;
+}
+function addRecent(w){const a=ls("sup_dr",[]).filter(x=>x!==w);a.unshift(w);lset("sup_dr",a.slice(0,10));renderRecent();}
+function renderRecent(){const b=$("drec"),a=ls("sup_dr",[]);b.innerHTML="";$("drh").style.display=a.length?"":"none";a.forEach(w=>{const x=document.createElement("button");x.className="pill";x.textContent=w;x.onclick=()=>lookup(w);b.appendChild(x);});}
+function renderDef(r,q){
+  const box=$("dres");box.innerHTML="";
+  if(r.valid===false){
+    const c=document.createElement("div");c.className="card";const b=document.createElement("b");b.textContent="Word not found";c.appendChild(b);
+    if(r.suggest){const p=document.createElement("p");p.className="mu";p.append("Did you mean: ");const x=document.createElement("button");x.className="pill";x.textContent=r.suggest;x.onclick=()=>lookup(r.suggest);p.appendChild(x);c.appendChild(p);}
+    box.appendChild(c);return;
+  }
+  const word=String(r.word||q);addRecent(word);
+  const c=document.createElement("div");c.className="card";
+  const h=document.createElement("div");h.className="row";h.style.justifyContent="space-between";
+  const t=document.createElement("div"),hw=document.createElement("h2");hw.style.cssText="font-size:26px;margin:0";hw.textContent=word;t.appendChild(hw);
+  if(r.phonetic){const ph=document.createElement("div");ph.className="mu";ph.textContent=r.phonetic;t.appendChild(ph);}
+  const lb=document.createElement("button");lb.className="pill";lb.innerHTML=ico("volume");lb.append("Listen");lb.onclick=()=>speak(word,true);
+  h.append(t,lb);c.appendChild(h);
+  if(r.translation){const tr=document.createElement("div");tr.style.cssText="margin-top:10px;padding:8px 10px;background:var(--bd);border-radius:10px";const l=document.createElement("span");l.className="mu";l.textContent="Translation";const v=document.createElement("b");v.textContent=r.translation;tr.append(l," \u00b7 ",v);c.appendChild(tr);}
+  (r.meanings||[]).slice(0,3).forEach(m=>{const d=document.createElement("div");d.style.marginTop="12px";if(m.pos){const g=document.createElement("span");g.className="tag";g.textContent=m.pos;d.appendChild(g);}const df=document.createElement("div");df.style.marginTop="4px";df.textContent=m.def||"";d.appendChild(df);if(m.ex){const e=document.createElement("div");e.className="mu";e.style.fontStyle="italic";e.textContent="\u201c"+m.ex+"\u201d";d.appendChild(e);}c.appendChild(d);});
+  if((r.synonyms||[]).length){const s2=document.createElement("div");s2.style.marginTop="12px";const l=document.createElement("div");l.className="mu";l.textContent="Synonyms";s2.appendChild(l);const row=document.createElement("div");row.className="chips";row.style.flexWrap="wrap";r.synonyms.slice(0,4).forEach(x=>{const b=document.createElement("button");b.className="pill";b.textContent=x;b.onclick=()=>lookup(x);row.appendChild(b);});s2.appendChild(row);c.appendChild(s2);}
+  const sv=document.createElement("button");sv.className="btn g";sv.style.cssText="width:100%;margin-top:14px";const has=words().some(x=>x.w===word);sv.textContent=has?"Saved!":"Save word";sv.disabled=has;
+  sv.onclick=()=>{saveWords([{w:word,m:(r.meanings&&r.meanings[0]&&r.meanings[0].def)||""}]);sv.textContent="Saved!";sv.disabled=true;};c.appendChild(sv);
+  box.appendChild(c);
+}
+$("dgo").onclick=()=>lookup($("dq").value);
+$("dq").onkeydown=e=>{if(e.key==="Enter")lookup($("dq").value);};
+let drc=null;
+$("dmic").onclick=()=>{
+  if(drc){drc.stop();return;}
+  if(!SR){$("dnote").textContent=micMsg("unsupported");return;}
+  try{speechSynthesis.cancel();}catch(e){}
+  try{
+    drc=new SR();drc.lang="en-US";drc.interimResults=false;
+    drc.onstart=()=>{$("dmic").classList.add("rec");$("dnote").textContent="Listening\u2026";};
+    drc.onresult=e=>{const t=e.results[0][0].transcript;drc=null;$("dq").value=t;lookup(t);};
+    drc.onerror=e=>{$("dnote").textContent=micMsg(e.error);};
+    drc.onend=()=>{$("dmic").classList.remove("rec");drc=null;};
+    drc.start();
+  }catch(e){drc=null;$("dnote").textContent=micMsg("");}
+};
+renderRecent();
+// app language (UI only; conversations stay in English)
+const LN=[["en","English"],["es","Español"],["fr","Français"],["pt","Português"],["ar","العربية"],["hi","हिन्दी"],["zh","中文"],["th","ไทย"],["ja","日本語"],["vi","Tiếng Việt"]],LI={es:0,fr:1,pt:2,ar:3,hi:4,zh:5,th:6,ja:7,vi:8};
+const ROWS=[
+["Home","Inicio","Accueil","Início","الرئيسية"],["Progress","Progreso","Progrès","Progresso","التقدم"],["Words","Palabras","Mots","Palavras","الكلمات"],["Profile","Perfil","Profil","Perfil","الملف الشخصي"],
+["AI English speaking coach","Entrenador de inglés con IA","Coach d’anglais oral avec IA","Treinador de inglês com IA","مدرب المحادثة بالإنجليزية بالذكاء الاصطناعي"],
+["day streak","días seguidos","jours d’affilée","dias seguidos","أيام متتالية"],["words saved","palabras guardadas","mots enregistrés","palavras salvas","كلمات محفوظة"],["sessions","sesiones","sessions","sessões","جلسات"],
+["Your level","Tu nivel","Votre niveau","Seu nível","مستواك"],["Practice scenarios","Escenarios de práctica","Scénarios d’entraînement","Cenários de prática","سيناريوهات التدريب"],["Tools","Herramientas","Outils","Ferramentas","الأدوات"],
+["Find my level","Descubre mi nivel","Trouver mon niveau","Descobrir meu nível","اكتشف مستواي"],["5-question quick test","Prueba rápida de 5 preguntas","Test rapide de 5 questions","Teste rápido de 5 perguntas","اختبار سريع من 5 أسئلة"],
+["Go Premium","Hazte Premium","Passer à Premium","Seja Premium","اشترك في بريميوم"],["Pronunciation practice","Práctica de pronunciación","Entraînement à la prononciation","Prática de pronúncia","تدريب النطق"],
+["Repeat phrases and get a score","Repite frases y obtén una puntuación","Répétez des phrases et obtenez un score","Repita frases e receba uma nota","كرر العبارات واحصل على درجة"],
+["My words","Mis palabras","Mes mots","Minhas palavras","كلماتي"],["Clear list","Borrar lista","Effacer la liste","Limpar lista","مسح القائمة"],
+["Beginner","Principiante","Débutant","Iniciante","مبتدئ"],["Intermediate","Intermedio","Intermédiaire","Intermediário","متوسط"],["Advanced","Avanzado","Avancé","Avançado","متقدم"],
+["5-10 min · voice chat","5-10 min · chat de voz","5-10 min · chat vocal","5-10 min · chat de voz","5-10 دقائق · محادثة صوتية"],["Premium","Premium","Premium","Premium","بريميوم"],
+["Order at a café","Pedir en una cafetería","Commander dans un café","Pedir em uma cafeteria","الطلب في مقهى"],["Job interview","Entrevista de trabajo","Entretien d’embauche","Entrevista de emprego","مقابلة عمل"],["At the airport","En el aeropuerto","À l’aéroport","No aeroporto","في المطار"],["Hotel check-in","Registro en el hotel","Enregistrement à l’hôtel","Check-in no hotel","تسجيل الوصول في الفندق"],["At the doctor","En el médico","Chez le médecin","No médico","عند الطبيب"],["Small talk","Conversación informal","Discussion informelle","Conversa informal","حديث عابر"],["Restaurant","Restaurante","Restaurant","Restaurante","مطعم"],["Shopping for clothes","Comprar ropa","Acheter des vêtements","Comprar roupas","شراء الملابس"],["Asking for directions","Pedir indicaciones","Demander son chemin","Pedir direções","السؤال عن الاتجاهات"],["Phone call to a friend","Llamada a un amigo","Appel à un ami","Ligação para um amigo","مكالمة هاتفية مع صديق"],
+["← Back","← Atrás","← Retour","← Voltar","← رجوع"],["Finish","Terminar","Terminer","Concluir","إنهاء"],["Send","Enviar","Envoyer","Enviar","إرسال"],
+["Or type your answer…","O escribe tu respuesta…","Ou tapez votre réponse…","Ou digite sua resposta…","أو اكتب إجابتك…"],["Listening…","Escuchando…","Écoute…","Ouvindo…","جارٍ الاستماع…"],["AI is thinking…","La IA está pensando…","L’IA réfléchit…","A IA está pensando…","الذكاء الاصطناعي يفكر…"],
+["Session report","Informe de la sesión","Bilan de la session","Relatório da sessão","تقرير الجلسة"],["Practice again","Practicar de nuevo","S’entraîner encore","Praticar novamente","تدرّب مرة أخرى"],["Tips","Consejos","Conseils","Dicas","نصائح"],["New words","Palabras nuevas","Nouveaux mots","Palavras novas","كلمات جديدة"],["Your corrections","Tus correcciones","Vos corrections","Suas correções","تصحيحاتك"],
+["Pronunciation","Pronunciación","Prononciation","Pronúncia","النطق"],["Listen","Escuchar","Écouter","Ouvir","استمع"],["Next →","Siguiente →","Suivant →","Próxima →","التالي →"],["Level test","Prueba de nivel","Test de niveau","Teste de nível","اختبار المستوى"],["Start practicing","Empezar a practicar","Commencer à s’entraîner","Começar a praticar","ابدأ التدرب"],
+["Free","Gratis","Gratuit","Grátis","مجاني"],["Yearly · $59.99","Anual · $59.99","Annuel · $59.99","Anual · $59.99","سنوي · $59.99"],["(save 50%)","(ahorra 50%)","(économisez 50 %)","(economize 50%)","(وفّر 50%)"],["Start 7-day free trial","Prueba gratis de 7 días","Essai gratuit de 7 jours","Teste grátis de 7 dias","ابدأ تجربة مجانية لمدة 7 أيام"],
+["Monthly · $9.99","Mensual · $9.99","Mensuel · $9.99","Mensal · $9.99","شهري · $9.99"],["Choose monthly","Elegir mensual","Choisir mensuel","Escolher mensal","اختر الشهري"],["Everything in Yearly, billed monthly","Todo lo del plan anual, facturado cada mes","Tout du plan annuel, facturé mensuellement","Tudo do plano anual, cobrado mensalmente","كل ميزات السنوي، بفوترة شهرية"],
+["Unlimited conversations, all scenarios, full progress tracking","Conversaciones ilimitadas, todos los escenarios y seguimiento completo","Conversations illimitées, tous les scénarios et suivi complet","Conversas ilimitadas, todos os cenários e acompanhamento completo","محادثات غير محدودة وكل السيناريوهات وتتبع كامل للتقدم"],
+["3 conversations in total · all 10 scenarios · pronunciation practice","3 conversaciones en total · los 10 escenarios · pronunciación","3 conversations au total · les 10 scénarios · prononciation","3 conversas no total · os 10 cenários · pronúncia","3 محادثات في المجموع · كل السيناريوهات · تدريب النطق"],
+["You have used your 3 free conversations. Upgrade to keep practicing.","Has usado tus 3 conversaciones gratis. Mejora tu plan para seguir practicando.","Vous avez utilisé vos 3 conversations gratuites. Passez à Premium pour continuer.","Você usou suas 3 conversas grátis. Faça upgrade para continuar praticando.","استخدمت محادثاتك المجانية الثلاث. رقّ خطتك لمتابعة التدرب."],
+["Account","Cuenta","Compte","Conta","الحساب"],["Log out","Cerrar sesión","Se déconnecter","Sair","تسجيل الخروج"],["Your goal","Tu objetivo","Votre objectif","Seu objetivo","هدفك"],["Level","Nivel","Niveau","Nível","المستوى"],["Plan","Plan","Forfait","Plano","الخطة"],["View plans","Ver planes","Voir les forfaits","Ver planos","عرض الخطط"],
+["App language","Idioma de la app","Langue de l’application","Idioma do app","لغة التطبيق"],["Appearance","Apariencia","Apparence","Aparência","المظهر"],["Auto","Automático","Auto","Automático","تلقائي"],["Light","Claro","Clair","Claro","فاتح"],["Dark","Oscuro","Sombre","Escuro","داكن"],
+["Replay onboarding","Repetir introducción","Revoir l’introduction","Rever introdução","إعادة المقدمة"],["Reset all data","Borrar todos los datos","Réinitialiser les données","Apagar todos os dados","مسح كل البيانات"],["Tap again to confirm","Toca de nuevo para confirmar","Touchez à nouveau pour confirmer","Toque novamente para confirmar","اضغط مرة أخرى للتأكيد"],["No goal set yet","Aún sin objetivo","Pas encore d’objectif","Nenhum objetivo ainda","لم يتم تحديد هدف"],
+["Welcome to SpeakUp","Bienvenido a SpeakUp","Bienvenue sur SpeakUp","Bem-vindo ao SpeakUp","مرحبًا بك في SpeakUp"],["Continue","Continuar","Continuer","Continuar","متابعة"],["Skip","Omitir","Passer","Pular","تخطي"],["What is your goal?","¿Cuál es tu objetivo?","Quel est votre objectif ?","Qual é o seu objetivo?","ما هو هدفك؟"],["You are all set","Todo listo","Tout est prêt","Tudo pronto","كل شيء جاهز"],
+["Work","Trabajo","Travail","Trabalho","العمل"],["Travel","Viajes","Voyage","Viagens","السفر"],["Study","Estudios","Études","Estudos","الدراسة"],["Daily life","Vida diaria","Vie quotidienne","Dia a dia","الحياة اليومية"],["Your name (optional)","Tu nombre (opcional)","Votre nom (facultatif)","Seu nome (opcional)","اسمك (اختياري)"],
+["Create your account","Crea tu cuenta","Créez votre compte","Crie sua conta","أنشئ حسابك"],["Create account","Crear cuenta","Créer un compte","Criar conta","إنشاء حساب"],["Welcome back","Bienvenido de nuevo","Bon retour","Bem-vindo de volta","مرحبًا بعودتك"],["Log in","Iniciar sesión","Se connecter","Entrar","تسجيل الدخول"],["Log in to continue.","Inicia sesión para continuar.","Connectez-vous pour continuer.","Entre para continuar.","سجّل الدخول للمتابعة."],
+["Create a new account instead","Crear una cuenta nueva","Créer un nouveau compte","Criar uma nova conta","إنشاء حساب جديد بدلًا من ذلك"],["Your name","Tu nombre","Votre nom","Seu nome","اسمك"],["Email","Correo electrónico","E-mail","E-mail","البريد الإلكتروني"],["Password (8+ characters)","Contraseña (8+ caracteres)","Mot de passe (8+ caractères)","Senha (8+ caracteres)","كلمة المرور (8+ أحرف)"],["Password","Contraseña","Mot de passe","Senha","كلمة المرور"],
+["Enter a valid email address.","Introduce un correo válido.","Saisissez un e-mail valide.","Digite um e-mail válido.","أدخل بريدًا إلكترونيًا صالحًا."],["Enter your name.","Introduce tu nombre.","Saisissez votre nom.","Digite seu nome.","أدخل اسمك."],["Use at least 8 characters for your password.","Usa al menos 8 caracteres para tu contraseña.","Utilisez au moins 8 caractères pour votre mot de passe.","Use pelo menos 8 caracteres na senha.","استخدم 8 أحرف على الأقل لكلمة المرور."],["Email or password is incorrect.","Correo o contraseña incorrectos.","E-mail ou mot de passe incorrect.","E-mail ou senha incorretos.","البريد أو كلمة المرور غير صحيحة."],
+["Create a free account to start practicing. It takes less than a minute.","Crea una cuenta gratis para empezar a practicar. Tarda menos de un minuto.","Créez un compte gratuit pour commencer. Cela prend moins d’une minute.","Crie uma conta grátis para começar a praticar. Leva menos de um minuto.","أنشئ حسابًا مجانيًا لبدء التدرب. يستغرق أقل من دقيقة."]
+];
+const X2={"Home": ["होम", "首页"], "Progress": ["प्रगति", "进度"], "Words": ["शब्द", "单词"], "Profile": ["प्रोफ़ाइल", "我的"], "AI English speaking coach": ["AI अंग्रेज़ी बोलने का कोच", "AI 英语口语教练"], "day streak": ["दिन की लगातार प्रैक्टिस", "连续天数"], "words saved": ["सहेजे शब्द", "已存单词"], "sessions": ["सत्र", "练习次数"], "Your level": ["आपका स्तर", "你的水平"], "Practice scenarios": ["अभ्यास परिदृश्य", "练习场景"], "Tools": ["टूल", "工具"], "Find my level": ["अपना स्तर जानें", "测测我的水平"], "5-question quick test": ["5 प्रश्नों की त्वरित परीक्षा", "5 题快速测试"], "Go Premium": ["प्रीमियम लें", "升级高级版"], "Pronunciation practice": ["उच्चारण अभ्यास", "发音练习"], "Repeat phrases and get a score": ["वाक्य दोहराएँ और स्कोर पाएँ", "跟读短语并获得评分"], "My words": ["मेरे शब्द", "我的单词"], "Clear list": ["सूची साफ़ करें", "清空列表"], "Beginner": ["शुरुआती", "初级"], "Intermediate": ["मध्यम", "中级"], "Advanced": ["उन्नत", "高级"], "5-10 min · voice chat": ["5-10 मिनट · वॉइस चैट", "5-10 分钟 · 语音聊天"], "Premium": ["प्रीमियम", "高级版"], "Order at a café": ["कैफ़े में ऑर्डर करना", "在咖啡馆点单"], "Job interview": ["नौकरी का इंटरव्यू", "求职面试"], "At the airport": ["हवाई अड्डे पर", "在机场"], "Hotel check-in": ["होटल चेक-इन", "酒店入住"], "At the doctor": ["डॉक्टर के पास", "看医生"], "Small talk": ["हल्की-फुल्की बातचीत", "闲聊"], "Restaurant": ["रेस्तरां", "餐厅"], "Shopping for clothes": ["कपड़ों की खरीदारी", "买衣服"], "Asking for directions": ["रास्ता पूछना", "问路"], "Phone call to a friend": ["दोस्त को फ़ोन कॉल", "给朋友打电话"], "← Back": ["← वापस", "← 返回"], "Finish": ["समाप्त करें", "结束"], "Send": ["भेजें", "发送"], "Or type your answer…": ["या अपना उत्तर लिखें…", "或输入你的回答…"], "Listening…": ["सुन रहा है…", "正在聆听…"], "AI is thinking…": ["AI सोच रहा है…", "AI 正在思考…"], "Session report": ["सत्र रिपोर्ट", "练习报告"], "Practice again": ["फिर से अभ्यास करें", "再练一次"], "Tips": ["सुझाव", "建议"], "New words": ["नए शब्द", "新单词"], "Your corrections": ["आपके सुधार", "你的纠错"], "Pronunciation": ["उच्चारण", "发音"], "Listen": ["सुनें", "收听"], "Next →": ["अगला →", "下一个 →"], "Level test": ["स्तर परीक्षा", "水平测试"], "Start practicing": ["अभ्यास शुरू करें", "开始练习"], "Free": ["मुफ़्त", "免费"], "Yearly · $59.99": ["वार्षिक · $59.99", "年付 · $59.99"], "(save 50%)": ["(50% बचत)", "(省 50%)"], "Start 7-day free trial": ["7 दिन का मुफ़्त ट्रायल शुरू करें", "开始 7 天免费试用"], "Monthly · $9.99": ["मासिक · $9.99", "月付 · $9.99"], "Choose monthly": ["मासिक चुनें", "选择月付"], "Everything in Yearly, billed monthly": ["वार्षिक प्लान की सभी सुविधाएँ, मासिक बिलिंग", "包含年付全部权益，按月计费"], "Unlimited conversations, all scenarios, full progress tracking": ["असीमित बातचीत, सभी परिदृश्य, पूरी प्रगति ट्रैकिंग", "无限对话、全部场景、完整进度追踪"], "3 conversations in total · all 10 scenarios · pronunciation practice": ["कुल 3 बातचीत · सभी 10 परिदृश्य · उच्चारण अभ्यास", "共 3 次对话 · 全部 10 个场景 · 发音练习"], "You have used your 3 free conversations. Upgrade to keep practicing.": ["आपकी 3 मुफ़्त बातचीत पूरी हो गईं। अभ्यास जारी रखने के लिए अपग्रेड करें।", "你的 3 次免费对话已用完。升级后即可继续练习。"], "Account": ["खाता", "账户"], "Log out": ["लॉग आउट", "退出登录"], "Your goal": ["आपका लक्ष्य", "你的目标"], "Level": ["स्तर", "水平"], "Plan": ["प्लान", "套餐"], "View plans": ["प्लान देखें", "查看套餐"], "App language": ["ऐप की भाषा", "应用语言"], "Appearance": ["दिखावट", "外观"], "Auto": ["ऑटो", "自动"], "Light": ["हल्का", "浅色"], "Dark": ["गहरा", "深色"], "Replay onboarding": ["परिचय दोबारा देखें", "重新查看引导"], "Reset all data": ["सारा डेटा रीसेट करें", "重置所有数据"], "Tap again to confirm": ["पुष्टि के लिए फिर टैप करें", "再次点按确认"], "No goal set yet": ["अभी कोई लक्ष्य नहीं चुना", "尚未设置目标"], "Welcome to SpeakUp": ["SpeakUp में आपका स्वागत है", "欢迎使用 SpeakUp"], "Continue": ["जारी रखें", "继续"], "Skip": ["छोड़ें", "跳过"], "What is your goal?": ["आपका लक्ष्य क्या है?", "你的目标是什么？"], "You are all set": ["सब तैयार है", "一切就绪"], "Work": ["काम", "工作"], "Travel": ["यात्रा", "旅行"], "Study": ["पढ़ाई", "学习"], "Daily life": ["रोज़मर्रा की ज़िंदगी", "日常生活"], "Your name (optional)": ["आपका नाम (वैकल्पिक)", "你的名字（选填）"], "Create your account": ["अपना खाता बनाएँ", "创建你的账户"], "Create account": ["खाता बनाएँ", "创建账户"], "Welcome back": ["वापसी पर स्वागत है", "欢迎回来"], "Log in": ["लॉग इन", "登录"], "Log in to continue.": ["जारी रखने के लिए लॉग इन करें।", "登录后继续。"], "Create a new account instead": ["इसके बजाय नया खाता बनाएँ", "改为创建新账户"], "Your name": ["आपका नाम", "你的名字"], "Email": ["ईमेल", "邮箱"], "Password (8+ characters)": ["पासवर्ड (8+ अक्षर)", "密码（至少 8 位）"], "Password": ["पासवर्ड", "密码"], "Enter a valid email address.": ["मान्य ईमेल पता दर्ज करें।", "请输入有效的邮箱地址。"], "Enter your name.": ["अपना नाम दर्ज करें।", "请输入你的名字。"], "Use at least 8 characters for your password.": ["पासवर्ड में कम से कम 8 अक्षर रखें।", "密码至少需要 8 位。"], "Email or password is incorrect.": ["ईमेल या पासवर्ड गलत है।", "邮箱或密码不正确。"], "Create a free account to start practicing. It takes less than a minute.": ["प्रैक्टिस शुरू करने के लिए मुफ़्त खाता बनाएँ। इसमें एक मिनट से भी कम लगता है।", "创建免费账户即可开始练习，不到一分钟。"]};ROWS.forEach(r=>{const x=X2[r[0]]||[r[0],r[0]];r.push(x[0],x[1]);});
+const X3={"Home": ["หน้าหลัก", "ホーム", "Trang chủ"], "Progress": ["ความคืบหน้า", "進捗", "Tiến độ"], "Words": ["คำศัพท์", "単語", "Từ vựng"], "Profile": ["โปรไฟล์", "プロフィール", "Hồ sơ"], "AI English speaking coach": ["โค้ชพูดภาษาอังกฤษด้วย AI", "AI英会話コーチ", "Huấn luyện viên nói tiếng Anh bằng AI"], "day streak": ["วันติดต่อกัน", "日連続", "ngày liên tiếp"], "words saved": ["คำที่บันทึกไว้", "保存した単語", "từ đã lưu"], "sessions": ["ครั้งที่ฝึก", "回の練習", "buổi học"], "Your level": ["ระดับของคุณ", "あなたのレベル", "Trình độ của bạn"], "Practice scenarios": ["สถานการณ์ฝึกพูด", "練習シーン", "Tình huống luyện tập"], "Tools": ["เครื่องมือ", "ツール", "Công cụ"], "Find my level": ["ค้นหาระดับของฉัน", "レベルを調べる", "Tìm trình độ của tôi"], "5-question quick test": ["แบบทดสอบด่วน 5 ข้อ", "5問のクイックテスト", "Bài kiểm tra nhanh 5 câu"], "Go Premium": ["อัปเกรดเป็นพรีเมียม", "プレミアムにする", "Nâng cấp Premium"], "Pronunciation practice": ["ฝึกการออกเสียง", "発音練習", "Luyện phát âm"], "Repeat phrases and get a score": ["พูดตามประโยคแล้วรับคะแนน", "フレーズを復唱してスコアを獲得", "Đọc lại câu và nhận điểm"], "My words": ["คำศัพท์ของฉัน", "マイ単語", "Từ vựng của tôi"], "Clear list": ["ล้างรายการ", "リストを消去", "Xóa danh sách"], "Beginner": ["ระดับเริ่มต้น", "初級", "Sơ cấp"], "Intermediate": ["ระดับกลาง", "中級", "Trung cấp"], "Advanced": ["ระดับสูง", "上級", "Nâng cao"], "5-10 min · voice chat": ["5-10 นาที · แชตด้วยเสียง", "5〜10分 · 音声チャット", "5-10 phút · trò chuyện bằng giọng nói"], "Premium": ["พรีเมียม", "プレミアム", "Premium"], "Order at a café": ["สั่งเครื่องดื่มที่คาเฟ่", "カフェで注文", "Gọi đồ ở quán cà phê"], "Job interview": ["สัมภาษณ์งาน", "就職面接", "Phỏng vấn xin việc"], "At the airport": ["ที่สนามบิน", "空港で", "Ở sân bay"], "Hotel check-in": ["เช็กอินโรงแรม", "ホテルのチェックイン", "Nhận phòng khách sạn"], "At the doctor": ["พบแพทย์", "病院で", "Đi khám bác sĩ"], "Small talk": ["พูดคุยทั่วไป", "雑談", "Trò chuyện xã giao"], "Restaurant": ["ร้านอาหาร", "レストラン", "Nhà hàng"], "Shopping for clothes": ["ซื้อเสื้อผ้า", "服の買い物", "Mua quần áo"], "Asking for directions": ["ถามทาง", "道をたずねる", "Hỏi đường"], "Phone call to a friend": ["โทรหาเพื่อน", "友達への電話", "Gọi điện cho bạn"], "← Back": ["← กลับ", "← 戻る", "← Quay lại"], "Finish": ["จบ", "終了", "Kết thúc"], "Send": ["ส่ง", "送信", "Gửi"], "Or type your answer…": ["หรือพิมพ์คำตอบของคุณ…", "または回答を入力…", "Hoặc nhập câu trả lời…"], "Listening…": ["กำลังฟัง…", "聞き取り中…", "Đang nghe…"], "AI is thinking…": ["AI กำลังคิด…", "AIが考え中…", "AI đang suy nghĩ…"], "Session report": ["รายงานการฝึก", "練習レポート", "Báo cáo buổi học"], "Practice again": ["ฝึกอีกครั้ง", "もう一度練習", "Luyện tập lại"], "Tips": ["เคล็ดลับ", "ヒント", "Mẹo"], "New words": ["คำศัพท์ใหม่", "新しい単語", "Từ mới"], "Your corrections": ["จุดที่แก้ไข", "修正ポイント", "Lỗi đã sửa"], "Pronunciation": ["การออกเสียง", "発音", "Phát âm"], "Listen": ["ฟัง", "聞く", "Nghe"], "Next →": ["ถัดไป →", "次へ →", "Tiếp →"], "Level test": ["ทดสอบระดับ", "レベルテスト", "Kiểm tra trình độ"], "Start practicing": ["เริ่มฝึก", "練習を始める", "Bắt đầu luyện tập"], "Free": ["ฟรี", "無料", "Miễn phí"], "Yearly · $59.99": ["รายปี · $59.99", "年額 · $59.99", "Hằng năm · $59.99"], "(save 50%)": ["(ประหยัด 50%)", "(50%お得)", "(tiết kiệm 50%)"], "Start 7-day free trial": ["เริ่มทดลองใช้ฟรี 7 วัน", "7日間の無料トライアルを開始", "Dùng thử miễn phí 7 ngày"], "Monthly · $9.99": ["รายเดือน · $9.99", "月額 · $9.99", "Hằng tháng · $9.99"], "Choose monthly": ["เลือกรายเดือน", "月額を選ぶ", "Chọn gói tháng"], "Everything in Yearly, billed monthly": ["สิทธิ์ทั้งหมดของแพ็กเกจรายปี เรียกเก็บรายเดือน", "年額プランの全機能を月払いで", "Mọi quyền lợi của gói năm, thanh toán hằng tháng"], "Unlimited conversations, all scenarios, full progress tracking": ["สนทนาไม่จำกัด ทุกสถานการณ์ ติดตามความคืบหน้าครบถ้วน", "会話無制限・全シーン・進捗をフルに追跡", "Trò chuyện không giới hạn, mọi tình huống, theo dõi tiến độ đầy đủ"], "3 conversations in total · all 10 scenarios · pronunciation practice": ["สนทนารวม 3 ครั้ง · ทั้ง 10 สถานการณ์ · ฝึกการออกเสียง", "会話は合計3回 · 全10シーン · 発音練習", "Tổng 3 cuộc trò chuyện · cả 10 tình huống · luyện phát âm"], "You have used your 3 free conversations. Upgrade to keep practicing.": ["คุณใช้การสนทนาฟรีครบ 3 ครั้งแล้ว อัปเกรดเพื่อฝึกต่อ", "無料の会話3回を使い切りました。続けるにはアップグレードしてください。", "Bạn đã dùng hết 3 cuộc trò chuyện miễn phí. Hãy nâng cấp để tiếp tục luyện tập."], "Account": ["บัญชี", "アカウント", "Tài khoản"], "Log out": ["ออกจากระบบ", "ログアウト", "Đăng xuất"], "Your goal": ["เป้าหมายของคุณ", "あなたの目標", "Mục tiêu của bạn"], "Level": ["ระดับ", "レベル", "Trình độ"], "Plan": ["แพ็กเกจ", "プラン", "Gói"], "View plans": ["ดูแพ็กเกจ", "プランを見る", "Xem các gói"], "App language": ["ภาษาของแอป", "アプリの言語", "Ngôn ngữ ứng dụng"], "Appearance": ["รูปลักษณ์", "外観", "Giao diện"], "Auto": ["อัตโนมัติ", "自動", "Tự động"], "Light": ["สว่าง", "ライト", "Sáng"], "Dark": ["มืด", "ダーク", "Tối"], "Replay onboarding": ["ดูแนะนำการใช้งานอีกครั้ง", "オンボーディングをもう一度見る", "Xem lại phần giới thiệu"], "Reset all data": ["รีเซ็ตข้อมูลทั้งหมด", "すべてのデータをリセット", "Đặt lại toàn bộ dữ liệu"], "Tap again to confirm": ["แตะอีกครั้งเพื่อยืนยัน", "もう一度タップして確認", "Chạm lần nữa để xác nhận"], "No goal set yet": ["ยังไม่ได้ตั้งเป้าหมาย", "目標は未設定です", "Chưa đặt mục tiêu"], "Welcome to SpeakUp": ["ยินดีต้อนรับสู่ SpeakUp", "SpeakUpへようこそ", "Chào mừng đến với SpeakUp"], "Continue": ["ต่อไป", "続ける", "Tiếp tục"], "Skip": ["ข้าม", "スキップ", "Bỏ qua"], "What is your goal?": ["เป้าหมายของคุณคืออะไร", "あなたの目標は何ですか？", "Mục tiêu của bạn là gì?"], "You are all set": ["พร้อมแล้ว", "準備完了です", "Mọi thứ đã sẵn sàng"], "Work": ["การทำงาน", "仕事", "Công việc"], "Travel": ["การเดินทาง", "旅行", "Du lịch"], "Study": ["การเรียน", "勉強", "Học tập"], "Daily life": ["ชีวิตประจำวัน", "日常生活", "Cuộc sống hằng ngày"], "Your name (optional)": ["ชื่อของคุณ (ไม่บังคับ)", "お名前（任意）", "Tên của bạn (không bắt buộc)"], "Create your account": ["สร้างบัญชีของคุณ", "アカウントを作成", "Tạo tài khoản của bạn"], "Create account": ["สร้างบัญชี", "アカウント作成", "Tạo tài khoản"], "Welcome back": ["ยินดีต้อนรับกลับ", "おかえりなさい", "Chào mừng trở lại"], "Log in": ["เข้าสู่ระบบ", "ログイン", "Đăng nhập"], "Log in to continue.": ["เข้าสู่ระบบเพื่อดำเนินการต่อ", "ログインして続行します。", "Đăng nhập để tiếp tục."], "Create a new account instead": ["สร้างบัญชีใหม่แทน", "代わりに新しいアカウントを作成", "Tạo tài khoản mới"], "Your name": ["ชื่อของคุณ", "お名前", "Tên của bạn"], "Email": ["อีเมล", "メールアドレス", "Email"], "Password (8+ characters)": ["รหัสผ่าน (8 ตัวอักษรขึ้นไป)", "パスワード（8文字以上）", "Mật khẩu (từ 8 ký tự)"], "Password": ["รหัสผ่าน", "パスワード", "Mật khẩu"], "Enter a valid email address.": ["กรุณากรอกอีเมลที่ถูกต้อง", "有効なメールアドレスを入力してください。", "Nhập địa chỉ email hợp lệ."], "Enter your name.": ["กรุณากรอกชื่อของคุณ", "お名前を入力してください。", "Nhập tên của bạn."], "Use at least 8 characters for your password.": ["รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร", "パスワードは8文字以上にしてください。", "Mật khẩu cần ít nhất 8 ký tự."], "Email or password is incorrect.": ["อีเมลหรือรหัสผ่านไม่ถูกต้อง", "メールアドレスまたはパスワードが正しくありません。", "Email hoặc mật khẩu không đúng."], "Create a free account to start practicing. It takes less than a minute.": ["สร้างบัญชีฟรีเพื่อเริ่มฝึก ใช้เวลาไม่ถึงหนึ่งนาที", "無料アカウントを作成して練習を始めましょう。1分もかかりません。", "Tạo tài khoản miễn phí để bắt đầu luyện tập. Chỉ mất chưa đến một phút."]};ROWS.forEach(r=>{const x=X3[r[0]]||[r[0],r[0],r[0]];r.push(...x);});
+ROWS.push(...[["Level progress", "Progreso de nivel", "Progression de niveau", "Progresso de nível", "تقدم المستوى", "स्तर की प्रगति", "等级进度", "ความคืบหน้าของระดับ", "レベルの進捗", "Tiến độ trình độ"], ["Ready to level up?", "¿Listo para subir de nivel?", "Prêt à passer au niveau supérieur ?", "Pronto para subir de nível?", "هل أنت مستعد للارتقاء بمستواك؟", "स्तर बढ़ाने के लिए तैयार?", "准备好升级了吗？", "พร้อมเลื่อนระดับหรือยัง", "レベルアップの準備はできましたか？", "Sẵn sàng lên cấp chưa?"], ["Move up", "Subir de nivel", "Monter de niveau", "Subir de nível", "ارتقِ", "स्तर बढ़ाएँ", "升级", "เลื่อนระดับขึ้น", "レベルを上げる", "Lên cấp"], ["Not now", "Ahora no", "Pas maintenant", "Agora não", "ليس الآن", "अभी नहीं", "暂不", "ไว้ก่อน", "今はしない", "Để sau"], ["Need an easier level?", "¿Necesitas un nivel más fácil?", "Besoin d’un niveau plus facile ?", "Precisa de um nível mais fácil?", "هل تحتاج مستوى أسهل؟", "क्या आसान स्तर चाहिए?", "需要更简单的等级吗？", "ต้องการระดับที่ง่ายขึ้นไหม", "もっと易しいレベルにしますか？", "Cần mức dễ hơn?"], ["Move down", "Bajar de nivel", "Descendre de niveau", "Descer de nível", "انتقل لمستوى أدنى", "स्तर घटाएँ", "降级", "ลดระดับ", "レベルを下げる", "Hạ cấp"]]);
+ROWS.push(...[["Skills", "Habilidades", "Compétences", "Habilidades", "المهارات", "कौशल", "技能", "ทักษะ", "スキル", "Kỹ năng"], ["Grammar", "Gramática", "Grammaire", "Gramática", "القواعد", "व्याकरण", "语法", "ไวยากรณ์", "文法", "Ngữ pháp"], ["Vocabulary", "Vocabulario", "Vocabulaire", "Vocabulário", "المفردات", "शब्दावली", "词汇", "คำศัพท์", "語彙", "Từ vựng"], ["Fluency", "Fluidez", "Aisance", "Fluência", "الطلاقة", "प्रवाह", "流利度", "ความคล่องแคล่ว", "流暢さ", "Độ trôi chảy"], ["Focus:", "Enfoque:", "Priorité :", "Foco:", "التركيز:", "फ़ोकस:", "重点：", "โฟกัส:", "重点：", "Trọng tâm:"]]);
+ROWS.push(...[["All", "Todos", "Tous", "Todos", "الكل", "सभी", "全部", "ทั้งหมด", "すべて", "Tất cả"], ["Health", "Salud", "Santé", "Saúde", "الصحة", "स्वास्थ्य", "健康", "สุขภาพ", "健康", "Sức khỏe"], ["Invite friends", "Invitar amigos", "Inviter des amis", "Convidar amigos", "ادعُ أصدقاءك", "दोस्तों को आमंत्रित करें", "邀请好友", "ชวนเพื่อน", "友達を招待", "Mời bạn bè"], ["Each friend who signs up unlocks 2 more scenarios.", "Cada amigo que se registre desbloquea 2 escenarios más.", "Chaque ami inscrit débloque 2 scénarios de plus.", "Cada amigo que se cadastrar desbloqueia mais 2 cenários.", "كل صديق يسجّل يفتح لك سيناريوهين إضافيين.", "साइन अप करने वाला हर दोस्त 2 और परिदृश्य अनलॉक करता है।", "每有一位好友注册，即可多解锁 2 个场景。", "เพื่อนทุกคนที่สมัครจะปลดล็อก 2 สถานการณ์เพิ่ม", "友達が1人登録するごとに、シーンが2つ解放されます。", "Mỗi người bạn đăng ký sẽ mở khóa thêm 2 tình huống."]]);
+ROWS.push(...[["Change photo", "Cambiar foto", "Changer la photo", "Alterar foto", "تغيير الصورة", "फ़ोटो बदलें", "更换头像", "เปลี่ยนรูป", "写真を変更", "Đổi ảnh"], ["Remove", "Quitar", "Supprimer", "Remover", "إزالة", "हटाएँ", "移除", "ลบ", "削除", "Xóa"], ["Edit profile", "Editar perfil", "Modifier le profil", "Editar perfil", "تعديل الملف الشخصي", "प्रोफ़ाइल संपादित करें", "编辑资料", "แก้ไขโปรไฟล์", "プロフィールを編集", "Chỉnh sửa hồ sơ"], ["Display name", "Nombre visible", "Nom affiché", "Nome de exibição", "الاسم المعروض", "प्रदर्शित नाम", "显示名称", "ชื่อที่แสดง", "表示名", "Tên hiển thị"], ["Native language", "Idioma nativo", "Langue maternelle", "Idioma nativo", "اللغة الأم", "मातृभाषा", "母语", "ภาษาแม่", "母語", "Ngôn ngữ mẹ đẻ"], ["Learning goal", "Objetivo de aprendizaje", "Objectif d’apprentissage", "Objetivo de aprendizado", "هدف التعلم", "सीखने का लक्ष्य", "学习目标", "เป้าหมายการเรียน", "学習の目標", "Mục tiêu học tập"], ["Daily goal (sessions per day)", "Meta diaria (sesiones al día)", "Objectif quotidien (sessions par jour)", "Meta diária (sessões por dia)", "الهدف اليومي (جلسات يومياً)", "दैनिक लक्ष्य (प्रतिदिन सत्र)", "每日目标（每天练习次数）", "เป้าหมายรายวัน (ครั้งต่อวัน)", "1日の目標（1日の練習回数）", "Mục tiêu hằng ngày (số buổi mỗi ngày)"], ["Practice reminder time", "Hora del recordatorio de práctica", "Heure du rappel d’entraînement", "Horário do lembrete de prática", "وقت تذكير التدريب", "अभ्यास रिमाइंडर का समय", "练习提醒时间", "เวลาแจ้งเตือนฝึก", "練習リマインダーの時刻", "Giờ nhắc luyện tập"], ["Reminder notifications need the full mobile app. The time is saved for later.", "Las notificaciones de recordatorio requieren la app móvil completa. La hora queda guardada.", "Les rappels nécessitent l’application mobile complète. L’heure est enregistrée pour plus tard.", "Os lembretes exigem o app móvel completo. O horário fica salvo para depois.", "تتطلب إشعارات التذكير التطبيق الكامل للجوال. تم حفظ الوقت لاستخدامه لاحقاً.", "रिमाइंडर नोटिफ़िकेशन के लिए पूरा मोबाइल ऐप चाहिए। समय बाद के लिए सहेजा गया है।", "提醒通知需要完整的手机应用。时间已保存，稍后可用。", "การแจ้งเตือนต้องใช้แอปมือถือฉบับเต็ม เวลาถูกบันทึกไว้ใช้ภายหลัง", "リマインダー通知にはモバイルアプリ版が必要です。時刻は保存されます。", "Thông báo nhắc nhở cần ứng dụng di động đầy đủ. Giờ đã được lưu để dùng sau."], ["Save changes", "Guardar cambios", "Enregistrer", "Salvar alterações", "حفظ التغييرات", "बदलाव सहेजें", "保存更改", "บันทึกการเปลี่ยนแปลง", "変更を保存", "Lưu thay đổi"], ["Change password", "Cambiar contraseña", "Changer le mot de passe", "Alterar senha", "تغيير كلمة المرور", "पासवर्ड बदलें", "修改密码", "เปลี่ยนรหัสผ่าน", "パスワードを変更", "Đổi mật khẩu"], ["Current password", "Contraseña actual", "Mot de passe actuel", "Senha atual", "كلمة المرور الحالية", "वर्तमान पासवर्ड", "当前密码", "รหัสผ่านปัจจุบัน", "現在のパスワード", "Mật khẩu hiện tại"], ["New password (8+ characters)", "Nueva contraseña (8+ caracteres)", "Nouveau mot de passe (8+ caractères)", "Nova senha (8+ caracteres)", "كلمة مرور جديدة (8 أحرف فأكثر)", "नया पासवर्ड (8+ अक्षर)", "新密码（至少 8 位）", "รหัสผ่านใหม่ (8 ตัวอักษรขึ้นไป)", "新しいパスワード（8文字以上）", "Mật khẩu mới (từ 8 ký tự)"], ["Update password", "Actualizar contraseña", "Mettre à jour le mot de passe", "Atualizar senha", "تحديث كلمة المرور", "पासवर्ड अपडेट करें", "更新密码", "อัปเดตรหัสผ่าน", "パスワードを更新", "Cập nhật mật khẩu"], ["Delete account", "Eliminar cuenta", "Supprimer le compte", "Excluir conta", "حذف الحساب", "खाता हटाएँ", "删除账户", "ลบบัญชี", "アカウントを削除", "Xóa tài khoản"], ["Not set", "Sin definir", "Non défini", "Não definido", "غير محدد", "सेट नहीं", "未设置", "ยังไม่ได้ตั้ง", "未設定", "Chưa đặt"], ["Photo updated.", "Foto actualizada.", "Photo mise à jour.", "Foto atualizada.", "تم تحديث الصورة.", "फ़ोटो अपडेट हुई।", "头像已更新。", "อัปเดตรูปแล้ว", "写真を更新しました。", "Đã cập nhật ảnh."], ["Photo removed.", "Foto eliminada.", "Photo supprimée.", "Foto removida.", "تمت إزالة الصورة.", "फ़ोटो हटाई गई।", "头像已移除。", "ลบรูปแล้ว", "写真を削除しました。", "Đã xóa ảnh."], ["Saved.", "Guardado.", "Enregistré.", "Salvo.", "تم الحفظ.", "सहेजा गया।", "已保存。", "บันทึกแล้ว", "保存しました。", "Đã lưu."], ["Current password is incorrect.", "La contraseña actual es incorrecta.", "Le mot de passe actuel est incorrect.", "A senha atual está incorreta.", "كلمة المرور الحالية غير صحيحة.", "वर्तमान पासवर्ड गलत है।", "当前密码不正确。", "รหัสผ่านปัจจุบันไม่ถูกต้อง", "現在のパスワードが正しくありません。", "Mật khẩu hiện tại không đúng."], ["Password updated.", "Contraseña actualizada.", "Mot de passe mis à jour.", "Senha atualizada.", "تم تحديث كلمة المرور.", "पासवर्ड अपडेट हुआ।", "密码已更新。", "อัปเดตรหัสผ่านแล้ว", "パスワードを更新しました。", "Đã cập nhật mật khẩu."], ["Tap again to delete", "Toca de nuevo para eliminar", "Touchez à nouveau pour supprimer", "Toque de novo para excluir", "اضغط مرة أخرى للحذف", "हटाने के लिए फिर टैप करें", "再次点按以删除", "แตะอีกครั้งเพื่อลบ", "もう一度タップして削除", "Chạm lần nữa để xóa"], ["Bio", "Biografía", "Bio", "Bio", "نبذة عنك", "परिचय", "个人简介", "แนะนำตัว", "自己紹介", "Giới thiệu"], ["Tell us a little about yourself", "Cuéntanos un poco sobre ti", "Parlez-nous un peu de vous", "Conte um pouco sobre você", "أخبرنا قليلاً عن نفسك", "हमें अपने बारे में थोड़ा बताएँ", "简单介绍一下你自己", "เล่าเกี่ยวกับตัวคุณสักหน่อย", "あなたについて少し教えてください", "Hãy giới thiệu đôi chút về bạn"], ["Birthday", "Cumpleaños", "Date de naissance", "Aniversário", "تاريخ الميلاد", "जन्मदिन", "生日", "วันเกิด", "誕生日", "Ngày sinh"], ["Country", "País", "Pays", "País", "البلد", "देश", "国家/地区", "ประเทศ", "国・地域", "Quốc gia"], ["Unlock more scenarios", "Desbloquea más escenarios", "Débloquez plus de scénarios", "Desbloqueie mais cenários", "افتح المزيد من السيناريوهات", "और परिदृश्य अनलॉक करें", "解锁更多场景", "ปลดล็อกสถานการณ์เพิ่ม", "シーンをもっと解放", "Mở khóa thêm tình huống"], ["friends joined", "amigos se unieron", "amis inscrits", "amigos entraram", "أصدقاء انضموا", "दोस्त जुड़े", "位好友已加入", "เพื่อนที่เข้าร่วม", "人が参加", "bạn đã tham gia"], ["/ 10 scenarios unlocked", "/ 10 escenarios desbloqueados", "/ 10 scénarios débloqués", "/ 10 cenários desbloqueados", "/ 10 سيناريوهات مفتوحة", "/ 10 परिदृश्य अनलॉक", "/ 10 个场景已解锁", "/ 10 สถานการณ์ที่ปลดล็อก", "/ 10 シーン解放済み", "/ 10 tình huống đã mở khóa"], ["Your invite code", "Tu código de invitación", "Votre code d’invitation", "Seu código de convite", "رمز دعوتك", "आपका आमंत्रण कोड", "你的邀请码", "รหัสเชิญของคุณ", "あなたの招待コード", "Mã mời của bạn"], ["Share invite link", "Compartir enlace de invitación", "Partager le lien d’invitation", "Compartilhar link de convite", "مشاركة رابط الدعوة", "आमंत्रण लिंक साझा करें", "分享邀请链接", "แชร์ลิงก์เชิญ", "招待リンクを共有", "Chia sẻ liên kết mời"], ["A friend joined?", "¿Se unió un amigo?", "Un ami s’est inscrit ?", "Um amigo entrou?", "هل انضم صديق؟", "कोई दोस्त जुड़ा?", "有好友加入了？", "เพื่อนเข้าร่วมแล้วหรือยัง", "友達が参加しましたか？", "Có bạn tham gia chưa?"], ["Paste the confirmation code they send you after signing up.", "Pega el código de confirmación que te envíe al registrarse.", "Collez le code de confirmation qu’il vous envoie après son inscription.", "Cole o código de confirmação que ele enviar após o cadastro.", "الصق رمز التأكيد الذي يرسله لك بعد التسجيل.", "साइन अप के बाद दोस्त का भेजा पुष्टि कोड यहाँ चिपकाएँ।", "粘贴好友注册后发给你的确认码。", "วางรหัสยืนยันที่เพื่อนส่งให้หลังสมัคร", "登録後に友達から届く確認コードを貼り付けてください。", "Dán mã xác nhận bạn bè gửi sau khi đăng ký."], ["Redeem", "Canjear", "Valider", "Resgatar", "استبدال", "रिडीम करें", "兑换", "แลกรหัส", "適用", "Đổi mã"], ["Copy", "Copiar", "Copier", "Copiar", "نسخ", "कॉपी करें", "复制", "คัดลอก", "コピー", "Sao chép"], ["Copied!", "¡Copiado!", "Copié !", "Copiado!", "تم النسخ!", "कॉपी हो गया!", "已复制！", "คัดลอกแล้ว!", "コピーしました！", "Đã sao chép!"], ["Friend added! 2 more scenarios unlocked.", "¡Amigo añadido! Se desbloquearon 2 escenarios más.", "Ami ajouté ! 2 scénarios de plus débloqués.", "Amigo adicionado! Mais 2 cenários desbloqueados.", "تمت إضافة الصديق! تم فتح سيناريوهين إضافيين.", "दोस्त जुड़ गया! 2 और परिदृश्य अनलॉक हुए।", "已添加好友！多解锁 2 个场景。", "เพิ่มเพื่อนแล้ว! ปลดล็อก 2 สถานการณ์เพิ่ม", "友達を追加しました！シーンが2つ解放されました。", "Đã thêm bạn! Mở khóa thêm 2 tình huống."], ["That code doesn't look right.", "Ese código no parece correcto.", "Ce code ne semble pas correct.", "Esse código não parece correto.", "هذا الرمز لا يبدو صحيحاً.", "यह कोड सही नहीं लगता।", "这个码看起来不对。", "รหัสนี้ดูไม่ถูกต้อง", "このコードは正しくないようです。", "Mã này có vẻ không đúng."], ["This code isn't for your invite.", "Este código no es de tu invitación.", "Ce code ne correspond pas à votre invitation.", "Este código não é do seu convite.", "هذا الرمز ليس لدعوتك.", "यह कोड आपके आमंत्रण का नहीं है।", "这个码不属于你的邀请。", "รหัสนี้ไม่ใช่ของคำเชิญของคุณ", "このコードはあなたの招待用ではありません。", "Mã này không thuộc lời mời của bạn."], ["This code was already used.", "Este código ya se usó.", "Ce code a déjà été utilisé.", "Este código já foi usado.", "تم استخدام هذا الرمز من قبل.", "यह कोड पहले ही इस्तेमाल हो चुका है।", "这个码已被使用。", "รหัสนี้ถูกใช้แล้ว", "このコードは使用済みです。", "Mã này đã được sử dụng."], ["Friend's invite code (optional)", "Código de invitación de un amigo (opcional)", "Code d’invitation d’un ami (facultatif)", "Código de convite de um amigo (opcional)", "رمز دعوة صديق (اختياري)", "दोस्त का आमंत्रण कोड (वैकल्पिक)", "好友邀请码（选填）", "รหัสเชิญจากเพื่อน (ไม่บังคับ)", "友達の招待コード（任意）", "Mã mời của bạn bè (không bắt buộc)"], ["Invite code looks invalid.", "El código de invitación no parece válido.", "Le code d’invitation semble invalide.", "O código de convite parece inválido.", "رمز الدعوة يبدو غير صالح.", "आमंत्रण कोड मान्य नहीं लगता।", "邀请码似乎无效。", "รหัสเชิญดูไม่ถูกต้อง", "招待コードが無効のようです。", "Mã mời có vẻ không hợp lệ."], ["You joined with a friend's invite. Send them this code so they unlock 2 scenarios:", "Te uniste con la invitación de un amigo. Envíale este código para que desbloquee 2 escenarios:", "Vous avez rejoint via l’invitation d’un ami. Envoyez-lui ce code pour qu’il débloque 2 scénarios :", "Você entrou pelo convite de um amigo. Envie este código para ele desbloquear 2 cenários:", "انضممت بدعوة من صديق. أرسل له هذا الرمز ليفتح سيناريوهين:", "आप दोस्त के आमंत्रण से जुड़े हैं। उन्हें यह कोड भेजें ताकि उनके 2 परिदृश्य अनलॉक हों:", "你通过好友邀请加入。把这个码发给 TA，对方即可解锁 2 个场景：", "คุณเข้าร่วมด้วยคำเชิญของเพื่อน ส่งรหัสนี้ให้เพื่อนเพื่อปลดล็อก 2 สถานการณ์:", "友達の招待で参加しました。このコードを送ると、友達のシーンが2つ解放されます：", "Bạn tham gia nhờ lời mời của bạn bè. Gửi mã này để họ mở khóa 2 tình huống:"]]);
+ROWS.push(...[["Demo: invites are confirmed on this device only. A live app would verify sign-ups on a server.", "Demo: las invitaciones se confirman solo en este dispositivo. Una app real verificaría los registros en un servidor.", "Démo : les invitations sont confirmées uniquement sur cet appareil. Une vraie appli vérifierait les inscriptions sur un serveur.", "Demo: os convites são confirmados apenas neste dispositivo. Um app real verificaria os cadastros em um servidor.", "تجريبي: تُؤكَّد الدعوات على هذا الجهاز فقط. التطبيق الفعلي سيتحقق من التسجيلات عبر خادم.", "डेमो: आमंत्रण केवल इसी डिवाइस पर पुष्टि होते हैं। असली ऐप सर्वर पर साइन-अप सत्यापित करेगा।", "演示版：邀请仅在本设备上确认。正式应用会在服务器上验证注册。", "เดโม: การยืนยันคำเชิญทำบนอุปกรณ์นี้เท่านั้น แอปจริงจะตรวจสอบการสมัครบนเซิร์ฟเวอร์", "デモ：招待はこの端末でのみ確認されます。正式版ではサーバーで登録を検証します。", "Bản demo: lời mời chỉ được xác nhận trên thiết bị này. Ứng dụng thật sẽ xác minh đăng ký trên máy chủ."], ["Couldn't save the photo.", "No se pudo guardar la foto.", "Impossible d’enregistrer la photo.", "Não foi possível salvar a foto.", "تعذّر حفظ الصورة.", "फ़ोटो सहेजी नहीं जा सकी।", "无法保存头像。", "ไม่สามารถบันทึกรูปได้", "写真を保存できませんでした。", "Không thể lưu ảnh."], ["Couldn't read that image.", "No se pudo leer esa imagen.", "Impossible de lire cette image.", "Não foi possível ler essa imagem.", "تعذّرت قراءة هذه الصورة.", "यह छवि पढ़ी नहीं जा सकी।", "无法读取这张图片。", "ไม่สามารถอ่านรูปนี้ได้", "この画像を読み込めませんでした。", "Không đọc được ảnh này."], ["Please choose an image file.", "Elige un archivo de imagen.", "Choisissez un fichier image.", "Escolha um arquivo de imagem.", "اختر ملف صورة.", "कृपया एक छवि फ़ाइल चुनें।", "请选择图片文件。", "กรุณาเลือกไฟล์รูปภาพ", "画像ファイルを選んでください。", "Vui lòng chọn tệp ảnh."]]);
+ROWS.push(...[["Microphone is blocked here. Allow it in your browser, or type your answer.", "El micrófono está bloqueado aquí. Permítelo en tu navegador o escribe tu respuesta.", "Le micro est bloqué ici. Autorisez-le dans votre navigateur ou tapez votre réponse.", "O microfone está bloqueado aqui. Permita no navegador ou digite sua resposta.", "الميكروفون محظور هنا. اسمح به في المتصفح أو اكتب إجابتك.", "यहाँ माइक्रोफ़ोन ब्लॉक है। ब्राउज़र में अनुमति दें या अपना उत्तर लिखें।", "此处麦克风被阻止。请在浏览器中允许，或直接输入回答。", "ไมโครโฟนถูกบล็อกที่นี่ อนุญาตในเบราว์เซอร์ หรือพิมพ์คำตอบของคุณ", "ここではマイクがブロックされています。ブラウザで許可するか、回答を入力してください。", "Micro đang bị chặn ở đây. Hãy cho phép trong trình duyệt hoặc nhập câu trả lời."], ["No microphone found.", "No se encontró ningún micrófono.", "Aucun micro détecté.", "Nenhum microfone encontrado.", "لم يتم العثور على ميكروفون.", "कोई माइक्रोफ़ोन नहीं मिला।", "未找到麦克风。", "ไม่พบไมโครโฟน", "マイクが見つかりません。", "Không tìm thấy micro."], ["I didn't hear anything. Try again.", "No oí nada. Inténtalo de nuevo.", "Je n’ai rien entendu. Réessayez.", "Não ouvi nada. Tente de novo.", "لم أسمع شيئاً. حاول مرة أخرى.", "कुछ सुनाई नहीं दिया। फिर कोशिश करें।", "没有听到声音，请再试一次。", "ไม่ได้ยินอะไรเลย ลองอีกครั้ง", "何も聞こえませんでした。もう一度お試しください。", "Tôi không nghe thấy gì. Hãy thử lại."], ["Voice needs an internet connection.", "La voz necesita conexión a internet.", "La voix nécessite une connexion Internet.", "A voz precisa de conexão com a internet.", "الصوت يحتاج إلى اتصال بالإنترنت.", "वॉइस के लिए इंटरनेट कनेक्शन चाहिए।", "语音功能需要联网。", "ฟีเจอร์เสียงต้องใช้อินเทอร์เน็ต", "音声入力にはインターネット接続が必要です。", "Tính năng giọng nói cần kết nối internet."], ["Voice input isn't supported in this browser. Please type instead.", "La entrada de voz no es compatible con este navegador. Escribe tu respuesta.", "La saisie vocale n’est pas prise en charge par ce navigateur. Veuillez écrire.", "A entrada de voz não é compatível com este navegador. Digite sua resposta.", "الإدخال الصوتي غير مدعوم في هذا المتصفح. يُرجى الكتابة.", "इस ब्राउज़र में वॉइस इनपुट समर्थित नहीं है। कृपया टाइप करें।", "此浏览器不支持语音输入，请改为键入。", "เบราว์เซอร์นี้ไม่รองรับการป้อนเสียง กรุณาพิมพ์แทน", "このブラウザは音声入力に対応していません。入力してください。", "Trình duyệt này không hỗ trợ nhập giọng nói. Hãy nhập bằng bàn phím."], ["Couldn't hear you. Check mic permission or type instead.", "No te escuché. Revisa el permiso del micrófono o escribe.", "Je ne vous ai pas entendu. Vérifiez l’autorisation du micro ou écrivez.", "Não consegui ouvir você. Verifique a permissão do microfone ou digite.", "لم أسمعك. تحقق من إذن الميكروفون أو اكتب.", "आपकी आवाज़ नहीं सुनी जा सकी। माइक की अनुमति जाँचें या टाइप करें।", "没听清。请检查麦克风权限，或改为键入。", "ไม่ได้ยินเสียงของคุณ ตรวจสอบสิทธิ์ไมค์ หรือพิมพ์แทน", "聞き取れませんでした。マイクの許可を確認するか、入力してください。", "Không nghe được. Hãy kiểm tra quyền micro hoặc nhập bằng bàn phím."]]);
+ROWS.push(...[["Favorites", "Favoritos", "Favoris", "Favoritos", "المفضلة", "पसंदीदा", "收藏", "รายการโปรด", "お気に入り", "Yêu thích"], ["Search scenarios", "Buscar escenarios", "Rechercher un scénario", "Buscar cenários", "ابحث في السيناريوهات", "परिदृश्य खोजें", "搜索场景", "ค้นหาสถานการณ์", "シーンを検索", "Tìm tình huống"], ["No scenarios found", "No se encontraron escenarios", "Aucun scénario trouvé", "Nenhum cenário encontrado", "لم يتم العثور على سيناريوهات", "कोई परिदृश्य नहीं मिला", "未找到场景", "ไม่พบสถานการณ์", "シーンが見つかりません", "Không tìm thấy tình huống"], ["History", "Historial", "Historique", "Histórico", "السجل", "इतिहास", "历史记录", "ประวัติ", "履歴", "Lịch sử"], ["Settings", "Ajustes", "Réglages", "Configurações", "الإعدادات", "सेटिंग्स", "设置", "การตั้งค่า", "設定", "Cài đặt"], ["Achievements", "Logros", "Réussites", "Conquistas", "الإنجازات", "उपलब्धियाँ", "成就", "ความสำเร็จ", "実績", "Thành tích"], ["Help & support", "Ayuda y soporte", "Aide et assistance", "Ajuda e suporte", "المساعدة والدعم", "सहायता और सपोर्ट", "帮助与支持", "ความช่วยเหลือและการสนับสนุน", "ヘルプとサポート", "Trợ giúp và hỗ trợ"], ["More", "Más", "Plus", "Mais", "المزيد", "और", "更多", "เพิ่มเติม", "その他", "Thêm"], ["No sessions yet", "Aún no hay sesiones", "Aucune session pour l’instant", "Ainda não há sessões", "لا توجد جلسات بعد", "अभी कोई सत्र नहीं", "暂无练习记录", "ยังไม่มีการฝึก", "まだ練習がありません", "Chưa có buổi học nào"], ["Voice replies", "Respuestas en voz", "Réponses vocales", "Respostas por voz", "الردود الصوتية", "वॉइस जवाब", "语音回复", "เสียงตอบกลับ", "音声での返答", "Phản hồi bằng giọng nói"], ["Voice speed", "Velocidad de la voz", "Vitesse de la voix", "Velocidade da voz", "سرعة الصوت", "आवाज़ की गति", "语音速度", "ความเร็วเสียง", "音声の速さ", "Tốc độ giọng nói"], ["Slow", "Lenta", "Lente", "Lenta", "بطيئة", "धीमी", "慢", "ช้า", "ゆっくり", "Chậm"], ["Normal", "Normal", "Normale", "Normal", "عادية", "सामान्य", "正常", "ปกติ", "普通", "Bình thường"], ["Fast", "Rápida", "Rapide", "Rápida", "سريعة", "तेज़", "快", "เร็ว", "速い", "Nhanh"], ["Text size", "Tamaño del texto", "Taille du texte", "Tamanho do texto", "حجم النص", "टेक्स्ट का आकार", "文字大小", "ขนาดตัวอักษร", "文字サイズ", "Cỡ chữ"], ["Small", "Pequeño", "Petit", "Pequeno", "صغير", "छोटा", "小", "เล็ก", "小", "Nhỏ"], ["Medium", "Mediano", "Moyen", "Médio", "متوسط", "मध्यम", "中", "กลาง", "中", "Vừa"], ["Large", "Grande", "Grand", "Grande", "كبير", "बड़ा", "大", "ใหญ่", "大", "Lớn"], ["Clear history", "Borrar historial", "Effacer l’historique", "Limpar histórico", "مسح السجل", "इतिहास साफ़ करें", "清除历史记录", "ล้างประวัติ", "履歴を消去", "Xóa lịch sử"], ["Copy my data", "Copiar mis datos", "Copier mes données", "Copiar meus dados", "نسخ بياناتي", "मेरा डेटा कॉपी करें", "复制我的数据", "คัดลอกข้อมูลของฉัน", "データをコピー", "Sao chép dữ liệu của tôi"], ["History cleared.", "Historial borrado.", "Historique effacé.", "Histórico limpo.", "تم مسح السجل.", "इतिहास साफ़ हो गया।", "历史记录已清除。", "ล้างประวัติแล้ว", "履歴を消去しました。", "Đã xóa lịch sử."], ["Copied to clipboard.", "Copiado al portapapeles.", "Copié dans le presse-papiers.", "Copiado para a área de transferência.", "تم النسخ إلى الحافظة.", "क्लिपबोर्ड पर कॉपी हुआ।", "已复制到剪贴板。", "คัดลอกไปยังคลิปบอร์ดแล้ว", "クリップボードにコピーしました。", "Đã sao chép vào bộ nhớ tạm."], ["First conversation", "Primera conversación", "Première conversation", "Primeira conversa", "أول محادثة", "पहली बातचीत", "首次对话", "บทสนทนาแรก", "初めての会話", "Cuộc trò chuyện đầu tiên"], ["5 sessions", "5 sesiones", "5 sessions", "5 sessões", "5 جلسات", "5 सत्र", "5 次练习", "5 ครั้ง", "5回の練習", "5 buổi học"], ["3-day streak", "Racha de 3 días", "Série de 3 jours", "3 dias seguidos", "3 أيام متتالية", "3 दिन की स्ट्रीक", "连续 3 天", "ต่อเนื่อง 3 วัน", "3日連続", "Chuỗi 3 ngày"], ["7-day streak", "Racha de 7 días", "Série de 7 jours", "7 dias seguidos", "7 أيام متتالية", "7 दिन की स्ट्रीक", "连续 7 天", "ต่อเนื่อง 7 วัน", "7日連続", "Chuỗi 7 ngày"], ["10 words saved", "10 palabras guardadas", "10 mots enregistrés", "10 palavras salvas", "10 كلمات محفوظة", "10 शब्द सहेजे", "已存 10 个单词", "บันทึก 10 คำ", "単語10個を保存", "Đã lưu 10 từ"], ["Score 9+", "Puntuación 9+", "Score 9+", "Nota 9+", "درجة 9+", "स्कोर 9+", "得分 9+", "คะแนน 9+", "スコア9以上", "Điểm 9+"], ["Level up", "Subir de nivel", "Niveau supérieur", "Subir de nível", "ارتقاء المستوى", "स्तर बढ़ाना", "升级", "เลื่อนระดับ", "レベルアップ", "Lên cấp"], ["Invited a friend", "Invitaste a un amigo", "Ami invité", "Convidou um amigo", "دعوت صديقاً", "दोस्त को आमंत्रित किया", "邀请了好友", "ชวนเพื่อนแล้ว", "友達を招待", "Đã mời một người bạn"]]);
+ROWS.push(...[["Word of the day", "Palabra del día", "Mot du jour", "Palavra do dia", "كلمة اليوم", "आज का शब्द", "每日一词", "คำศัพท์ประจำวัน", "今日の単語", "Từ vựng hôm nay"], ["Save word", "Guardar palabra", "Enregistrer le mot", "Salvar palavra", "حفظ الكلمة", "शब्द सहेजें", "保存单词", "บันทึกคำ", "単語を保存", "Lưu từ"], ["Saved!", "¡Guardada!", "Enregistré !", "Salva!", "تم الحفظ!", "सहेजा गया!", "已保存！", "บันทึกแล้ว!", "保存しました！", "Đã lưu!"], ["Weekly summary", "Resumen semanal", "Résumé de la semaine", "Resumo semanal", "الملخص الأسبوعي", "साप्ताहिक सारांश", "每周总结", "สรุปรายสัปดาห์", "週間サマリー", "Tóm tắt tuần"], ["Sessions", "Sesiones", "Sessions", "Sessões", "الجلسات", "सत्र", "练习次数", "จำนวนครั้ง", "練習回数", "Số buổi học"], ["Practice days", "Días de práctica", "Jours d’entraînement", "Dias de prática", "أيام التدريب", "अभ्यास के दिन", "练习天数", "วันที่ฝึก", "練習した日数", "Ngày luyện tập"], ["Average score", "Puntuación media", "Score moyen", "Nota média", "متوسط الدرجات", "औसत स्कोर", "平均得分", "คะแนนเฉลี่ย", "平均スコア", "Điểm trung bình"], ["Strongest skill", "Habilidad más fuerte", "Compétence la plus forte", "Habilidade mais forte", "أقوى مهارة", "सबसे मज़बूत कौशल", "最强技能", "ทักษะที่แข็งที่สุด", "得意なスキル", "Kỹ năng mạnh nhất"], ["Needs focus", "Necesita enfoque", "À travailler", "Precisa de foco", "تحتاج إلى تركيز", "ध्यान देने योग्य", "需要加强", "ควรเน้น", "重点的に練習", "Cần tập trung"], ["vs last week", "vs. semana pasada", "vs semaine dernière", "vs semana passada", "مقارنة بالأسبوع الماضي", "पिछले सप्ताह से", "较上周", "เทียบกับสัปดาห์ก่อน", "先週比", "so với tuần trước"], ["How do levels work?", "¿Cómo funcionan los niveles?", "Comment fonctionnent les niveaux ?", "Como funcionam os níveis?", "كيف تعمل المستويات؟", "स्तर कैसे काम करते हैं?", "等级是如何运作的？", "ระดับทำงานอย่างไร", "レベルの仕組みは？", "Các cấp độ hoạt động thế nào?"], ["Your level moves through the standard A1 to C2 steps. Every finished session adds XP. When your recent scores are high, the app suggests moving up.", "Tu nivel avanza por los pasos estándar de A1 a C2. Cada sesión terminada suma XP. Cuando tus puntuaciones recientes son altas, la app te sugiere subir de nivel.", "Votre niveau progresse selon les étapes standard A1 à C2. Chaque session terminée ajoute des XP. Quand vos scores récents sont élevés, l’appli vous suggère de monter.", "Seu nível avança pelas etapas padrão de A1 a C2. Cada sessão concluída soma XP. Quando suas notas recentes são altas, o app sugere subir de nível.", "يتقدم مستواك عبر الخطوات القياسية من A1 إلى C2. كل جلسة مكتملة تضيف نقاط خبرة. عندما تكون درجاتك الأخيرة مرتفعة يقترح التطبيق الارتقاء بمستواك.", "आपका स्तर A1 से C2 के मानक चरणों में आगे बढ़ता है। हर पूरा सत्र XP जोड़ता है। हाल के स्कोर ऊँचे होने पर ऐप आगे बढ़ने का सुझाव देता है।", "你的等级会沿标准的 A1 至 C2 阶段推进。每完成一次练习都会增加 XP。近期得分较高时，应用会建议你升级。", "ระดับของคุณเลื่อนตามขั้นมาตรฐาน A1 ถึง C2 ทุกครั้งที่ฝึกจบจะได้ XP เมื่อคะแนนล่าสุดสูง แอปจะแนะนำให้เลื่อนระดับ", "レベルはA1からC2までの標準的な段階で上がります。練習を終えるたびにXPが加算され、最近のスコアが高いとレベルアップを提案します。", "Cấp độ của bạn tiến qua các bước chuẩn từ A1 đến C2. Mỗi buổi học hoàn thành sẽ cộng XP. Khi điểm gần đây cao, ứng dụng sẽ gợi ý lên cấp."], ["How do I unlock more scenarios?", "¿Cómo desbloqueo más escenarios?", "Comment débloquer plus de scénarios ?", "Como desbloqueio mais cenários?", "كيف أفتح المزيد من السيناريوهات؟", "और परिदृश्य कैसे अनलॉक करें?", "如何解锁更多场景？", "จะปลดล็อกสถานการณ์เพิ่มได้อย่างไร", "シーンを増やすには？", "Làm sao mở khóa thêm tình huống?"], ["Invite friends from your Profile. Every friend who signs up with your code unlocks 2 more scenarios and 2 more conversations.", "Invita amigos desde tu Perfil. Cada amigo que se registre con tu código desbloquea 2 escenarios y 2 conversaciones más.", "Invitez des amis depuis votre Profil. Chaque ami qui s’inscrit avec votre code débloque 2 scénarios et 2 conversations de plus.", "Convide amigos pelo seu Perfil. Cada amigo que se cadastrar com seu código desbloqueia mais 2 cenários e 2 conversas.", "ادعُ أصدقاءك من ملفك الشخصي. كل صديق يسجّل برمزك يفتح لك سيناريوهين ومحادثتين إضافيتين.", "अपनी प्रोफ़ाइल से दोस्तों को आमंत्रित करें। आपके कोड से साइन अप करने वाला हर दोस्त 2 और परिदृश्य और 2 और बातचीत अनलॉक करता है।", "在“我的”页面邀请好友。每位使用你的邀请码注册的好友，可为你多解锁 2 个场景和 2 次对话。", "เชิญเพื่อนจากโปรไฟล์ของคุณ เพื่อนทุกคนที่สมัครด้วยรหัสของคุณจะปลดล็อก 2 สถานการณ์และ 2 บทสนทนาเพิ่ม", "プロフィールから友達を招待しましょう。あなたのコードで登録した友達1人につき、シーンが2つ、会話が2回増えます。", "Hãy mời bạn bè từ Hồ sơ của bạn. Mỗi người bạn đăng ký bằng mã của bạn sẽ mở khóa thêm 2 tình huống và 2 cuộc trò chuyện."], ["The microphone is not working", "El micrófono no funciona", "Le micro ne fonctionne pas", "O microfone não está funcionando", "الميكروفون لا يعمل", "माइक्रोफ़ोन काम नहीं कर रहा", "麦克风无法使用", "ไมโครโฟนไม่ทำงาน", "マイクが動作しません", "Micro không hoạt động"], ["Allow microphone access for this site in your browser settings, use Chrome or Safari, and check your internet connection. You can always type your answer instead.", "Permite el acceso al micrófono para este sitio en los ajustes del navegador, usa Chrome o Safari y revisa tu conexión a internet. Siempre puedes escribir tu respuesta.", "Autorisez l’accès au micro pour ce site dans les réglages du navigateur, utilisez Chrome ou Safari et vérifiez votre connexion Internet. Vous pouvez toujours écrire votre réponse.", "Permita o acesso ao microfone para este site nas configurações do navegador, use Chrome ou Safari e verifique sua conexão com a internet. Você sempre pode digitar sua resposta.", "اسمح بالوصول إلى الميكروفون لهذا الموقع من إعدادات المتصفح، واستخدم Chrome أو Safari، وتأكد من اتصالك بالإنترنت. يمكنك دائماً كتابة إجابتك.", "ब्राउज़र सेटिंग में इस साइट के लिए माइक्रोफ़ोन की अनुमति दें, Chrome या Safari इस्तेमाल करें और इंटरनेट कनेक्शन जाँचें। आप हमेशा अपना उत्तर टाइप कर सकते हैं।", "请在浏览器设置中允许此网站使用麦克风，使用 Chrome 或 Safari，并检查网络连接。你也可以随时改为键入回答。", "อนุญาตการเข้าถึงไมโครโฟนสำหรับเว็บไซต์นี้ในการตั้งค่าเบราว์เซอร์ ใช้ Chrome หรือ Safari และตรวจสอบอินเทอร์เน็ต คุณพิมพ์คำตอบแทนได้เสมอ", "ブラウザの設定でこのサイトのマイクを許可し、ChromeまたはSafariを使い、インターネット接続を確認してください。回答はいつでも入力できます。", "Hãy cho phép trang này dùng micro trong cài đặt trình duyệt, dùng Chrome hoặc Safari và kiểm tra kết nối internet. Bạn luôn có thể nhập câu trả lời bằng bàn phím."], ["Is my data safe?", "¿Están seguros mis datos?", "Mes données sont-elles en sécurité ?", "Meus dados estão seguros?", "هل بياناتي آمنة؟", "क्या मेरा डेटा सुरक्षित है?", "我的数据安全吗？", "ข้อมูลของฉันปลอดภัยไหม", "データは安全ですか？", "Dữ liệu của tôi có an toàn không?"], ["In this prototype, your account and progress are saved only on this device. The full app will store them securely on a server.", "En este prototipo, tu cuenta y tu progreso se guardan solo en este dispositivo. La app completa los guardará de forma segura en un servidor.", "Dans ce prototype, votre compte et votre progression sont enregistrés uniquement sur cet appareil. L’appli complète les stockera en toute sécurité sur un serveur.", "Neste protótipo, sua conta e seu progresso ficam salvos apenas neste dispositivo. O app completo os guardará com segurança em um servidor.", "في هذا النموذج الأولي يُحفظ حسابك وتقدمك على هذا الجهاز فقط. سيحفظها التطبيق الكامل بأمان على خادم.", "इस प्रोटोटाइप में आपका खाता और प्रगति केवल इसी डिवाइस पर सहेजी जाती है। पूरा ऐप इन्हें सर्वर पर सुरक्षित रखेगा।", "在此原型中，你的账户和进度只保存在本设备上。正式应用会把它们安全地存放在服务器上。", "ในต้นแบบนี้ บัญชีและความคืบหน้าของคุณถูกบันทึกบนอุปกรณ์นี้เท่านั้น แอปฉบับเต็มจะเก็บไว้อย่างปลอดภัยบนเซิร์ฟเวอร์", "このプロトタイプでは、アカウントと進捗はこの端末にのみ保存されます。正式版ではサーバーに安全に保存されます。", "Trong bản thử nghiệm này, tài khoản và tiến độ của bạn chỉ được lưu trên thiết bị này. Ứng dụng đầy đủ sẽ lưu an toàn trên máy chủ."], ["How do I delete my account?", "¿Cómo elimino mi cuenta?", "Comment supprimer mon compte ?", "Como excluo minha conta?", "كيف أحذف حسابي؟", "मैं अपना खाता कैसे हटाऊँ?", "如何删除我的账户？", "จะลบบัญชีได้อย่างไร", "アカウントを削除するには？", "Làm sao xóa tài khoản?"], ["Open Profile and tap Delete account at the bottom. This erases your data on this device.", "Abre Perfil y toca Eliminar cuenta al final. Esto borra tus datos en este dispositivo.", "Ouvrez Profil et touchez Supprimer le compte en bas. Cela efface vos données sur cet appareil.", "Abra Perfil e toque em Excluir conta no final. Isso apaga seus dados neste dispositivo.", "افتح الملف الشخصي واضغط حذف الحساب في الأسفل. سيؤدي ذلك إلى مسح بياناتك على هذا الجهاز.", "प्रोफ़ाइल खोलें और नीचे खाता हटाएँ पर टैप करें। इससे इस डिवाइस का आपका डेटा मिट जाएगा।", "打开“我的”，点按底部的“删除账户”。这会清除本设备上的数据。", "เปิดโปรไฟล์แล้วแตะลบบัญชีที่ด้านล่าง ข้อมูลของคุณบนอุปกรณ์นี้จะถูกลบ", "プロフィールを開き、下部の「アカウントを削除」をタップします。この端末のデータが消去されます。", "Mở Hồ sơ và chạm Xóa tài khoản ở cuối trang. Thao tác này xóa dữ liệu của bạn trên thiết bị này."], ["Send feedback", "Enviar comentarios", "Envoyer un avis", "Enviar feedback", "إرسال ملاحظات", "फ़ीडबैक भेजें", "发送反馈", "ส่งความคิดเห็น", "フィードバックを送信", "Gửi phản hồi"], ["Tell us what to improve", "Cuéntanos qué mejorar", "Dites-nous quoi améliorer", "Conte o que melhorar", "أخبرنا بما يجب تحسينه", "बताएँ क्या बेहतर करें", "告诉我们需要改进什么", "บอกเราว่าควรปรับปรุงอะไร", "改善してほしい点を教えてください", "Hãy cho chúng tôi biết cần cải thiện gì"], ["Write a message first.", "Escribe primero un mensaje.", "Écrivez d’abord un message.", "Escreva uma mensagem primeiro.", "اكتب رسالة أولاً.", "पहले संदेश लिखें।", "请先写点内容。", "กรุณาเขียนข้อความก่อน", "先にメッセージを入力してください。", "Hãy viết tin nhắn trước."], ["Thanks! Your feedback was saved on this device.", "¡Gracias! Tus comentarios se guardaron en este dispositivo.", "Merci ! Votre avis a été enregistré sur cet appareil.", "Obrigado! Seu feedback foi salvo neste dispositivo.", "شكراً! تم حفظ ملاحظاتك على هذا الجهاز.", "धन्यवाद! आपका फ़ीडबैक इस डिवाइस पर सहेजा गया।", "谢谢！你的反馈已保存在本设备上。", "ขอบคุณ! บันทึกความคิดเห็นของคุณบนอุปกรณ์นี้แล้ว", "ありがとうございます！フィードバックはこの端末に保存されました。", "Cảm ơn! Phản hồi của bạn đã được lưu trên thiết bị này."], ["SpeakUp prototype v1.0", "SpeakUp prototipo v1.0", "SpeakUp prototype v1.0", "SpeakUp protótipo v1.0", "SpeakUp نموذج أولي v1.0", "SpeakUp प्रोटोटाइप v1.0", "SpeakUp 原型 v1.0", "SpeakUp ต้นแบบ v1.0", "SpeakUp プロトタイプ v1.0", "SpeakUp bản thử nghiệm v1.0"]]);
+ROWS.push(...[["Dictionary", "Diccionario", "Dictionnaire", "Dicionário", "القاموس", "शब्दकोश", "词典", "พจนานุกรม", "辞書", "Từ điển"], ["Type or say a word", "Escribe o di una palabra", "Tapez ou dites un mot", "Digite ou diga uma palavra", "اكتب كلمة أو انطقها", "कोई शब्द लिखें या बोलें", "输入或说出一个单词", "พิมพ์หรือพูดคำศัพท์", "単語を入力するか話してください", "Nhập hoặc nói một từ"], ["Search", "Buscar", "Rechercher", "Buscar", "بحث", "खोजें", "搜索", "ค้นหา", "検索", "Tìm kiếm"], ["Recent searches", "Búsquedas recientes", "Recherches récentes", "Pesquisas recentes", "عمليات البحث الأخيرة", "हाल की खोजें", "最近搜索", "การค้นหาล่าสุด", "最近の検索", "Tìm kiếm gần đây"], ["Translation", "Traducción", "Traduction", "Tradução", "الترجمة", "अनुवाद", "翻译", "คำแปล", "翻訳", "Bản dịch"], ["Synonyms", "Sinónimos", "Synonymes", "Sinônimos", "المرادفات", "समानार्थी शब्द", "近义词", "คำที่มีความหมายใกล้เคียง", "類義語", "Từ đồng nghĩa"], ["Word not found", "Palabra no encontrada", "Mot introuvable", "Palavra não encontrada", "لم يتم العثور على الكلمة", "शब्द नहीं मिला", "未找到该单词", "ไม่พบคำนี้", "単語が見つかりません", "Không tìm thấy từ"], ["Did you mean:", "¿Quisiste decir:", "Vouliez-vous dire :", "Você quis dizer:", "هل تقصد:", "क्या आपका मतलब था:", "你是不是想找：", "คุณหมายถึง:", "もしかして：", "Ý bạn là:"], ["Looking it up…", "Buscando…", "Recherche en cours…", "Procurando…", "جارٍ البحث…", "खोज रहा है…", "正在查询…", "กำลังค้นหา…", "調べています…", "Đang tra cứu…"]]);
+const D={};ROWS.forEach(r=>D[r[0]]=r.slice(1));
+const PT=[[/^Free(?::| ·) (\d+) of (\d+) conversations left$/,["Gratis: quedan $1 de $2 conversaciones","Gratuit : $1 conversation(s) restante(s) sur $2","Grátis: restam $1 de $2 conversas","مجاني: تبقّى $1 من $2 محادثات"]],[/^Welcome back, (.+)$/,["Bienvenido de nuevo, $1","Bon retour, $1","Bem-vindo de volta, $1","مرحبًا بعودتك، $1"]]];
+PT[0][1].push("मुफ़्त: $2 में से $1 बातचीत बाकी","免费：剩余 $1/$2 次对话");PT[1][1].push("वापसी पर स्वागत है, $1","欢迎回来，$1");
+PT[0][1].push("ฟรี: เหลือ $1 จาก $2 การสนทนา","無料：残り $1/$2 回の会話","Miễn phí: còn $1/$2 cuộc trò chuyện");PT[1][1].push("ยินดีต้อนรับกลับ, $1","おかえりなさい、$1","Chào mừng trở lại, $1");
+PT.push([/^Today: (\d+) \/ (\d+) sessions$/,["Hoy: $1 / $2 sesiones","Aujourd’hui : $1 / $2 sessions","Hoje: $1 / $2 sessões","اليوم: $1 / $2 جلسات","आज: $1 / $2 सत्र","今天：$1 / $2 次","วันนี้: $1 / $2 ครั้ง","今日：$1 / $2 回","Hôm nay: $1 / $2 buổi"]]);
+PT.push([/^(\d+) years old$/,["$1 años","$1 ans","$1 anos","$1 سنة","$1 वर्ष","$1 岁","$1 ปี","$1歳","$1 tuổi"]]);PT.push([/^Happy birthday, (.+)!$/,["¡Feliz cumpleaños, $1!","Joyeux anniversaire, $1 !","Feliz aniversário, $1!","عيد ميلاد سعيد يا $1!","जन्मदिन मुबारक, $1!","生日快乐，$1！","สุขสันต์วันเกิด $1!","お誕生日おめでとう、$1さん！","Chúc mừng sinh nhật, $1!"]]);
+let lang="en";const TM=new WeakMap();
+function xl(k){const i=LI[lang];if(D[k])return D[k][i];for(const [re,t] of PT){const m=k.match(re);if(m)return t[i].replace(/\$(\d)/g,(_,d)=>m[d]);}return k;}
+function tn(n){const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|OPTION)$/.test(p.nodeName)||(p.closest&&p.closest("#chat")&&!p.closest(".fx")))return;const cur=n.nodeValue,e=TM.get(n),o=e&&cur===e.w?e.o:cur,k=o.trim();if(!k)return;const w=o.match(/^\s*/)[0]+(lang==="en"?k:xl(k))+o.match(/\s*$/)[0];TM.set(n,{o,w});if(cur!==w)n.nodeValue=w;}
+function ta(el){const cur=el.getAttribute("placeholder");if(cur==null)return;const e=el._p,o=e&&cur===e.w?e.o:cur,w=lang==="en"?o:xl(o);el._p={o,w};if(cur!==w)el.setAttribute("placeholder",w);}
+function walk(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),a=[];let n;while(n=w.nextNode())a.push(n);a.forEach(tn);}
+function setLang(l){lang=l;lset("sup_lang",l);const r=document.documentElement;r.lang=l;r.dir=l==="ar"?"rtl":"ltr";document.querySelectorAll(".lsel").forEach(s=>s.value=l);walk(document.body);document.querySelectorAll("[placeholder]").forEach(ta);}
+new MutationObserver(ms=>ms.forEach(m=>{if(m.type==="characterData")tn(m.target);else if(m.type==="attributes")ta(m.target);else m.addedNodes.forEach(x=>{if(x.nodeType===3)tn(x);else if(x.nodeType===1){walk(x);if(x.hasAttribute("placeholder"))ta(x);x.querySelectorAll("[placeholder]").forEach(ta);}});})).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["placeholder"]});
+document.querySelectorAll(".lsel").forEach(s=>{s.innerHTML=LN.map(([c,n])=>`<option value="${c}">${n}</option>`).join("");s.onchange=()=>setLang(s.value);});
+{const sv=ls("sup_lang",null),nv=(navigator.language||"en").slice(0,2);setLang(sv||(LI[nv]!==undefined?nv:"en"));}
+level=ls("sup_ob",{}).level||level;syncLv();greet();show("home");
+if(!ls("sup_sess",false))acOpen();else if(!ls("sup_ob",{}).done)obOpen();
+
+$("end").onclick=async()=>{
+  try{speechSynthesis.cancel();}catch(e){}
+  const mine=hist.filter(m=>m.me);
+  show("rep");
+  if(!mine.length){$("repbody").innerHTML='<div class="card">You didn\'t say anything yet. Try a short conversation first!</div>';return;}
+  streak(true);window._hid=saveHist();
+  $("repbody").innerHTML='<div class="card mu">Preparing your feedback…</div>';
+  try{
+    const log=hist.map(m=>(m.me?"Learner: ":"AI: ")+m.t).join("\n");
+    const j=await ask(`Review this ${level} English learner's speaking practice (${sc.t}). Return ONLY JSON: {"score":1-10,"summary":"2 encouraging sentences","tips":["2-3 specific tips"],"skills":{"grammar":1-10,"vocabulary":1-10,"fluency":1-10},"words":[{"w":"useful word or phrase","m":"simple meaning"}]} (3-5 words).\n${log}`);
+    $("repbody").innerHTML=
+      `<div class="card"><h2>Score: ${+j.score||"-"}/10</h2><div></div></div>`+
+      `<div class="card"><h2>Tips</h2><ul id="tp"></ul></div>`+
+      `<div class="card"><h2>New words</h2><ul id="wd"></ul></div>`+
+      `<div class="card"><h2>Your corrections</h2><ul id="fx"></ul></div>`;
+    $("repbody").querySelector(".card div").textContent=j.summary||"";
+    const li=(id,arr)=>{const u=$(id);(arr.length?arr:["Nothing here — nice work!"]).forEach(x=>{const l=document.createElement("li");l.textContent=x;u.appendChild(l);});};
+    li("tp",(j.tips||[]).map(String));
+    li("wd",(j.words||[]).map(w=>w.w+" — "+w.m));
+    saveWords(j.words||[]);logSession(+j.score||0,j.skills);setHistScore(window._hid,+j.score||0);showAdv();
+    li("fx",fixes.map(f=>f.said+" → "+f.better));
+  }catch(e){$("repbody").innerHTML='<div class="card">'+(e.message||"Couldn't build the report.")+'</div>';}
+};
+document.querySelectorAll("[data-ic]").forEach(e=>{e.innerHTML='<svg viewBox="0 0 24 24">'+(IC[e.dataset.ic]||"")+'</svg>';});
+</script><script>
+/* PWA: register the service worker and offer an update when a new version is ready */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    var hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.register('./sw.js').then(function (reg) {
+      reg.addEventListener('updatefound', function () {
+        var worker = reg.installing;
+        if (!worker) return;
+        worker.addEventListener('statechange', function () {
+          if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdateBanner(worker);
+        });
+      });
+    }).catch(function () {});
+    var reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!hadController || reloading) return;
+      reloading = true;
+      location.reload();
+    });
+  });
+}
+function showUpdateBanner(worker) {
+  if (document.getElementById('pwa-update')) return;
+  var bar = document.createElement('div');
+  bar.id = 'pwa-update';
+  bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:10px;justify-content:space-between;padding:12px 14px;border-radius:14px;background:var(--card);color:var(--tx);border:1px solid var(--bd);box-shadow:0 8px 24px rgba(0,0,0,.18);font:14px system-ui,sans-serif';
+  var msg = document.createElement('span');
+  msg.textContent = 'A new version is ready.';
+  var btn = document.createElement('button');
+  btn.textContent = 'Update';
+  btn.style.cssText = 'border:0;border-radius:10px;padding:8px 14px;background:var(--ac);color:#fff;font:600 14px system-ui,sans-serif;cursor:pointer';
+  btn.onclick = function () { worker.postMessage({ type: 'SKIP_WAITING' }); };
+  bar.append(msg, btn);
+  document.body.appendChild(bar);
+}
+</script>
+</body></html>
